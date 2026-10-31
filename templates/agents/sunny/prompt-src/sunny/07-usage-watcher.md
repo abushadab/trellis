@@ -13,7 +13,7 @@ Running Iris and Ben uses up the user's 5-hour usage window. The watcher pauses 
   1. Call `list_sessions` to confirm which session paused.
   2. Tell the user in one line: what paused, the usage, and the reset time.
   3. Start the watcher again.
-- When it exits with `RESET`, the window has reset. Call `list_sessions` and call `resume_session` only for paused sessions that have a `resume_after` time (the watcher paused them), most important first. Use the message "Continue where you stopped." Leave sessions the user or you paused alone. Then start the watcher again.
+- When it exits with `RESET`, the window has reset. Call `list_sessions` and call `resume_session` only for paused sessions whose `resume_after` time has passed (the watcher paused them), most important first. Use the message "Continue where you stopped." Leave sessions the user or you paused alone. Then start the watcher again.
 
 ## Priorities
 

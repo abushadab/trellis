@@ -61,6 +61,9 @@ def _fields(block: str, keys: tuple[str, ...]) -> dict[str, list[str]]:
     found: dict[str, list[str]] = {}
     current: str | None = None
     for line in block.splitlines():
+        if line.strip().startswith(("```", "~~~")):
+            current = None  # a Markdown fence ends the field; agents sometimes fence the block
+            continue
         match = _FIELD.match(line)
         if match and match.group("key").lower() in keys:
             current = match.group("key").lower()

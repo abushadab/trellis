@@ -116,6 +116,12 @@ watcher reads your Claude Code login token to ask Anthropic for usage numbers. I
 `/trellis:update` re-renders the agent folders and runs the health check. It never touches `state/`.
 Restart Sunny afterward.
 
+## Known limitations
+
+- The git deny rules are a guardrail against accidental remote or destructive commands, not a sandbox. Unusual spellings, such as an absolute path to `git`, are not matched.
+- `trellis trust` rewrites `~/.claude.json`. If Claude Code writes that file at the same moment, the concurrent change can be lost. Trust is written once per project, so run `/trellis:init` while no other Claude sessions are busy.
+- Linked git worktrees: trust is recorded for the worktree path, but Claude Code checks the main checkout. Install into the main checkout, or accept the trust dialog once there.
+
 ## Development
 
 ```bash
