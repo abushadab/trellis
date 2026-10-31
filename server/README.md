@@ -7,7 +7,7 @@ Requires Python 3.11+. Linux and macOS only (it uses `fcntl` locks; the process-
 check in `claude_turn.py` uses `/proc` when present and a signal probe otherwise).
 
 ```bash
-uvx --from <plugin_root>/server trellis --help      # how agents and skills call it
+uv run --quiet --project <plugin_root>/server trellis --help      # how agents and skills call it
 cd <plugin_root>/server && uv run --extra test pytest -q   # the test suite
 ```
 
@@ -54,7 +54,7 @@ Implemented by `trellis_mcp/render.py` (DESIGN section 4).
   comma-joined, paths render absolute, an unknown or unset key is an error (guard optional keys with a flag).
 - `{{path:name}}`: `project_dir`, `repo_root`, `trellis_dir`, `state_dir`, `specflows_root`,
   `workitems_root`, `intents_root`, `handoff_chat`, `agent_root:<agent>`, `guidance:<agent>`, plus
-  `plugin_root`, `server_dir` and `trellis_cmd` (`uvx --from <plugin_root>/server trellis`).
+  `plugin_root`, `server_dir` and `trellis_cmd` (`uv run --quiet --project <plugin_root>/server trellis`).
 - `{{if:flag}} ... {{else}} ... {{/if}}`: nesting allowed, `{{if:!flag}}` negates, tags may sit inline in
   one line (frontmatter `tools:`). A tag that is alone on its line removes the whole line. Runs of blank
   lines in rendered Markdown are collapsed to one (not inside code fences).

@@ -192,11 +192,11 @@ class FixtureRenderTests(unittest.TestCase):
         command = settings["hooks"]["PostToolUse"][0]["hooks"][0]["command"]
         self.assertEqual(
             command,
-            f"uvx --from {self.plugin}/server trellis hook register-subagent --agent ben --project {self.project}",
+            f"uv run --quiet --project {self.plugin}/server trellis hook register-subagent --agent ben --project {self.project}",
         )
         mcp = json.loads((self.out / ".mcp.json").read_text())
         args = mcp["mcpServers"]["trellis"]["args"]
-        self.assertEqual(args[2:], ["trellis", "serve", "--agent", "ben", "--project", str(self.project)])
+        self.assertEqual(args[4:], ["trellis", "serve", "--agent", "ben", "--project", str(self.project)])
         self.assertEqual(args[:2], ["--from", f"{self.plugin}/server"])
         self.assertEqual(mcp["mcpServers"]["serena"], {"type": "http", "url": "http://127.0.0.1:1/mcp"})
         roles = json.loads((self.out / "roles.json").read_text())

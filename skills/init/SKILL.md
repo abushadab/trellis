@@ -74,8 +74,8 @@ Show the final file to the user.
 ## 5. Render and check
 
 ```bash
-uvx --from "${CLAUDE_PLUGIN_ROOT}/server" trellis render --project "$PWD" --plugin-root "${CLAUDE_PLUGIN_ROOT}"
-uvx --from "${CLAUDE_PLUGIN_ROOT}/server" trellis doctor --project "$PWD"
+uv run --quiet --project "${CLAUDE_PLUGIN_ROOT}/server" trellis render --project "$PWD" --plugin-root "${CLAUDE_PLUGIN_ROOT}"
+uv run --quiet --project "${CLAUDE_PLUGIN_ROOT}/server" trellis doctor --project "$PWD"
 ```
 
 The first run downloads dependencies and can take a minute. On a render error (exit 2), show the message
@@ -89,7 +89,7 @@ ignore `permissions.additionalDirectories` and the allow rules. Do not ask the u
 straight after rendering:
 
 ```bash
-uvx --from "${CLAUDE_PLUGIN_ROOT}/server" trellis trust --project "$PWD"
+uv run --quiet --project "${CLAUDE_PLUGIN_ROOT}/server" trellis trust --project "$PWD"
 ```
 
 It records `hasTrustDialogAccepted` for the project's git root, and for `repo_root`'s git root when that is a

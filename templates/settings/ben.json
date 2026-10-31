@@ -69,7 +69,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uvx --from {{path:plugin_root}}/server trellis hook register-subagent --agent ben --project {{path:project_dir}}"
+            "command": "{{path:trellis_cmd}} hook register-subagent --agent ben --project {{path:project_dir}}"
           }
         ]
       }

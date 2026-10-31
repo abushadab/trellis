@@ -48,7 +48,7 @@ The `trellis` CLI (console script) has subcommands:
 - `trellis doctor --project <dir>`: checks claude, uv, git, config, rendered files, optional tools.
 - Sunny launcher/usage subcommands: defined in phase B.
 
-Agents invoke it as `uvx --from <plugin_root>/server trellis ...`. `render` writes the absolute plugin root into rendered `.mcp.json` and settings hook commands; rendered files are per-machine and gitignored.
+Agents invoke it as `uv run --quiet --project <plugin_root>/server trellis ...`. `render` writes the absolute plugin root into rendered `.mcp.json` and settings hook commands; rendered files are per-machine and gitignored.
 
 ## 2. Target project layout
 
@@ -112,7 +112,7 @@ Relative paths in `product_doc`, `runtime_guide`, `design_authority` and `projec
 Existing `build.py` rules stay: numbered parts `NN-*.md` concatenate, `{{shared:name}}` expands `_shared/name.md`, `frontmatter*.yml` gives subagent frontmatter, `REQUIRED_SHARED` checks. Added:
 
 - `{{config:key}}` / `{{config:git.branch_prefix}}`: value from config (paths rendered absolute). Unknown key = render error.
-- `{{path:name}}`: computed absolute paths: `project_dir`, `repo_root`, `trellis_dir`, `state_dir`, `agent_root:<agent>`, `specflows_root`, `workitems_root`, `intents_root`, `handoff_chat`, `guidance:<agent>`, plus `plugin_root` (the directory holding `server/` and `templates/`), `server_dir` (`<plugin_root>/server`) and `trellis_cmd` (`uvx --from <plugin_root>/server trellis`, for hook commands and the commands Sunny runs).
+- `{{path:name}}`: computed absolute paths: `project_dir`, `repo_root`, `trellis_dir`, `state_dir`, `agent_root:<agent>`, `specflows_root`, `workitems_root`, `intents_root`, `handoff_chat`, `guidance:<agent>`, plus `plugin_root` (the directory holding `server/` and `templates/`), `server_dir` (`<plugin_root>/server`) and `trellis_cmd` (`uv run --quiet --project <plugin_root>/server trellis`, for hook commands and the commands Sunny runs).
 - `{{if:flag}} ... {{/if}}` (may span lines or sit inline in one line, nesting allowed, `{{else}}` allowed, `{{if:!flag}}` negates; a tag alone on its line removes the whole line, and runs of blank lines in rendered Markdown collapse to one outside code fences). Flags: `serena`, `playwright`, `product_doc`, `runtime_guide`, `design_authority`, `reference_products`, `pre_production`, `commit_specs`, `git_identity` (true only when both `git.commit_name` and `git.commit_email` are set). A document flag is true only when the document is configured and exists.
 - Frontmatter may use flags too (e.g. `mcpServers` Playwright only `{{if:playwright}}`).
 - Pointer sections ("Read X completely before ...") are emitted from config: `project_instructions` (all roles), `runtime_guide` (Ben, engineer, reviewer, validator, investigator), `product_doc` (orchestrators and spec roles). Missing optional files are skipped, not errors.

@@ -38,7 +38,7 @@ Then, in the project you want to use it in (a git repository):
 Init checks your tools, asks a few questions with detected defaults, writes `.trellis/config.yml`,
 renders the agent folders and runs `trellis doctor`.
 
-Requirements: `claude`, `git`, `uv` (for `uvx`), and optionally `npx` for Playwright. Linux and macOS.
+Requirements: `claude`, `git`, `uv`, and optionally `npx` for Playwright. Linux and macOS.
 
 ## Daily use
 
@@ -120,8 +120,8 @@ Restart Sunny afterward.
 
 ```bash
 cd server && uv run --extra test pytest -q                                  # tests
-uvx --from ./server trellis render --project <dir> --plugin-root "$PWD" --check   # is the render current?
-uvx --from ./server trellis doctor --project <dir>
+uv run --quiet --project ./server trellis render --project <dir> --plugin-root "$PWD" --check   # is the render current?
+uv run --quiet --project ./server trellis doctor --project <dir>
 claude plugin validate .
 ```
 

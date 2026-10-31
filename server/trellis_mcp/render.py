@@ -108,7 +108,7 @@ class RenderContext:
 
     @property
     def trellis_cmd(self) -> str:
-        return f"uvx --from {shlex.quote(str(self.server_dir))} trellis"
+        return f"uv run --quiet --project {shlex.quote(str(self.server_dir))} trellis"
 
     def with_escape(self, escape: Escape) -> RenderContext:
         clone = RenderContext(self.config, self.plugin_root, self.templates_root, escape)
@@ -585,9 +585,11 @@ def render_settings(agent: str, ctx: RenderContext, path: Path) -> bytes:
 def render_mcp_json(agent: str, ctx: RenderContext) -> bytes:
     servers: dict[str, Any] = {
         "trellis": {
-            "command": "uvx",
+            "command": "uv",
             "args": [
-                "--from",
+                "run",
+                "--quiet",
+                "--project",
                 str(ctx.server_dir),
                 "trellis",
                 "serve",
