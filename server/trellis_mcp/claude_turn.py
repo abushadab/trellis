@@ -291,3 +291,65 @@ class ClaudeTurnRunner:
         if status == "completed" and summary.final_message:
             final_path.write_text(summary.final_message, encoding="utf-8")
         return ClaudeTurnResult(status, summary.final_message, error, exit_code, summary.session_id)
+
+
+def process_alive(pid: int | None, start_ticks: int | None = None) -> bool:
+    """True when ``pid`` is the same live (not zombie) process that was recorded."""
+    if not process_matches(pid, start_ticks):
+        return False
+    try:
+        stat = Path(f"/proc/{pid}/stat").read_text(encoding="utf-8")
+        return stat.rsplit(")", 1)[1].split()[0] != "Z"
+    except (OSError, IndexError):
+        return True
+
+
+def launch_detached(
+    executable: str,
+    prompt: str,
+    *,
+    cwd: Path,
+    session_id: str,
+    resume: bool,
+    stdout_path: Path,
+    stderr_path: Path,
+    permission_mode: str = "bypassPermissions",
+    extra_args: Sequence[str] = (),
+    env: dict[str, str] | None = None,
+) -> tuple[int, int | None]:
+    """Start one turn in its own session and return ``(pid, start_ticks)`` without waiting.
+
+    The child does not die with the caller: it has its own session (``start_new_session``),
+    stdin is ``/dev/null`` and its output goes to files. While this process lives, a daemon
+    thread reaps the child so it never lingers as a zombie.
+    """
+    import threading
+
+    command = build_command(
+        executable,
+        prompt,
+        session_id=session_id,
+        resume=resume,
+        permission_mode=permission_mode,
+        extra_args=extra_args,
+    )
+    for path in (stdout_path, stderr_path):
+        path.parent.mkdir(parents=True, exist_ok=True)
+    child_env = dict(os.environ)
+    child_env.update(env or {})
+    child_env["CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS"] = "0"
+    try:
+        with stdout_path.open("wb") as out, stderr_path.open("wb") as err:
+            process = subprocess.Popen(
+                command,
+                cwd=cwd,
+                stdin=subprocess.DEVNULL,
+                stdout=out,
+                stderr=err,
+                env=child_env,
+                start_new_session=True,
+            )
+    except OSError as exc:
+        raise ClaudeTurnError(f"Failed to start Claude: {exc}") from exc
+    threading.Thread(target=process.wait, daemon=True, name=f"reap-{process.pid}").start()
+    return process.pid, process_start_ticks(process.pid)

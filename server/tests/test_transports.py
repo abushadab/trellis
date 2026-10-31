@@ -49,10 +49,7 @@ from trellis_mcp.server import create_mcp
 from trellis_mcp.sunny.transport import (
     append_sunny_chat,
     count_sunny_chats,
-    create_sunny_discovery_assignment,
     create_sunny_intent,
-    create_sunny_intent_writer_assignment,
-    create_sunny_review_assignment,
     handoff_sunny_to_iris,
     read_sunny_chats,
 )
@@ -1208,7 +1205,7 @@ Implemented.
         self.assertEqual(chat["count"], 0)
         self.assertEqual(chat["messages"], [])
 
-    def test_sunny_assignment_tools_follow_intent_handoff_shape(self) -> None:
+    def test_sunny_intent_and_handoff_follow_the_chat_shape(self) -> None:
         created = asyncio.run(
             create_sunny_intent(
                 "intent-flow",
@@ -1222,7 +1219,7 @@ Implemented.
         self.assertEqual(created["created_files"], ["chat.md"])
         self.assertEqual(
             created["created_dirs"],
-            ["assignments", "briefs", "discovery", "handoffs", "reviews"],
+            ["briefs", "handoffs"],
         )
 
         chat_md = (self.paths.intents_root / "intent-flow" / "chat.md").read_text(encoding="utf-8")
@@ -1231,118 +1228,6 @@ Implemented.
         self.assertIn("**Description:** Shape a project request for Iris.", chat_md)
         self.assertIn("**Goal:** produce an approved intent brief.", chat_md)
         self.assertIn("**Scope:** Sunny orchestration.", chat_md)
-
-        discovery = asyncio.run(
-            create_sunny_discovery_assignment(
-                intent_id="intent-flow",
-                task_id="DISC-001",
-                task_name="Discover request",
-                source="User conversation in current Sunny session",
-                goal="Collect the product and repo context needed for an intent brief.",
-                scope="Discovery only.",
-                non_goals="Do not write the intent brief.",
-                product_questions="What user outcome matters?",
-                repo_questions="Which repo surfaces are likely relevant?",
-                external_research_focus="Only current public docs if needed.",
-                risk_focus="Identify ambiguity that blocks Iris.",
-            )
-        )
-        self.assertTrue(discovery["ok"], discovery)
-        self.assertEqual(
-            discovery["assignment_file"],
-            f"{self.paths.sunny_root}/intents/intent-flow/assignments/DISC-001/discovery-assignment-r1.md",
-        )
-        self.assertEqual(
-            discovery["discovery_packet_file"],
-            f"{self.paths.sunny_root}/intents/intent-flow/discovery/DISC-001-discovery-r1.md",
-        )
-        discovery_md = (
-            self.paths.intents_root
-            / "intent-flow"
-            / "assignments"
-            / "DISC-001"
-            / "discovery-assignment-r1.md"
-        ).read_text(encoding="utf-8")
-        self.assertIn("# Discovery Assignment", discovery_md)
-        self.assertIn(
-            f"**Discovery Packet Path:** `{self.paths.sunny_root}/intents/intent-flow/discovery/DISC-001-discovery-r1.md`",
-            discovery_md,
-        )
-        self.assertIn("## Product Questions\n\nWhat user outcome matters?", discovery_md)
-        latest = asyncio.run(read_sunny_chats("intent-flow", count=1))
-        self.assertTrue(latest["ok"], latest)
-        self.assertEqual(latest["messages"][0]["author"], "Sunny")
-        self.assertIn("Type: discovery_assignment", latest["messages"][0]["content"])
-        self.assertIn("Action: discover", latest["messages"][0]["content"])
-
-        writer = asyncio.run(
-            create_sunny_intent_writer_assignment(
-                intent_id="intent-flow",
-                task_id="INTENT-001",
-                task_name="Write intent brief",
-                source="Discovery packet in shared chat",
-                inputs="- Discovery packet: `intents/intent-flow/discovery/DISC-001-discovery-r1.md`",
-                goal="Create the canonical intent brief for review.",
-                scope="Intent brief only.",
-                non_goals="Do not hand off before review.",
-            )
-        )
-        self.assertTrue(writer["ok"], writer)
-        self.assertEqual(
-            writer["assignment_file"],
-            f"{self.paths.sunny_root}/intents/intent-flow/assignments/INTENT-001/intent-writer-assignment-r1.md",
-        )
-        self.assertEqual(
-            writer["intent_brief_file"], f"{self.paths.sunny_root}/intents/intent-flow/briefs/intent-brief.md"
-        )
-        writer_md = (
-            self.paths.intents_root
-            / "intent-flow"
-            / "assignments"
-            / "INTENT-001"
-            / "intent-writer-assignment-r1.md"
-        ).read_text(encoding="utf-8")
-        self.assertIn("# Intent Writer Assignment", writer_md)
-        self.assertIn(
-            f"**Intent Brief Path:** `{self.paths.sunny_root}/intents/intent-flow/briefs/intent-brief.md`",
-            writer_md,
-        )
-        latest = asyncio.run(read_sunny_chats("intent-flow", count=1))
-        self.assertIn("Type: intent_writer_assignment", latest["messages"][0]["content"])
-        self.assertIn("Action: write_intent_brief", latest["messages"][0]["content"])
-
-        review = asyncio.run(
-            create_sunny_review_assignment(
-                intent_id="intent-flow",
-                task_id="REVIEW-001",
-                task_name="Review intent brief",
-                target="intents/intent-flow/briefs/intent-brief.md",
-                lens="Iris-readiness",
-                focus="Check clarity, scope boundaries, and unresolved questions.",
-                inputs="- Intent brief: `intents/intent-flow/briefs/intent-brief.md`",
-                source="Latest intent brief in shared chat",
-            )
-        )
-        self.assertTrue(review["ok"], review)
-        self.assertEqual(
-            review["assignment_file"],
-            f"{self.paths.sunny_root}/intents/intent-flow/assignments/REVIEW-001/review-assignment-r1.md",
-        )
-        self.assertEqual(
-            review["review_file"],
-            f"{self.paths.sunny_root}/intents/intent-flow/reviews/REVIEW-001-review-r1.md",
-        )
-        review_md = (
-            self.paths.intents_root / "intent-flow" / "assignments" / "REVIEW-001" / "review-assignment-r1.md"
-        ).read_text(encoding="utf-8")
-        self.assertIn("# Review Assignment", review_md)
-        self.assertIn(
-            f"**Review Packet Path:** `{self.paths.sunny_root}/intents/intent-flow/reviews/REVIEW-001-review-r1.md`",
-            review_md,
-        )
-        latest = asyncio.run(read_sunny_chats("intent-flow", count=1))
-        self.assertIn("Type: review_assignment", latest["messages"][0]["content"])
-        self.assertIn("Action: review", latest["messages"][0]["content"])
 
         handoff = asyncio.run(
             handoff_sunny_to_iris(
@@ -1379,14 +1264,14 @@ Implemented.
         self.assertTrue(appended["ok"], appended)
         count = asyncio.run(count_sunny_chats("intent-flow"))
         self.assertTrue(count["ok"], count)
-        self.assertEqual(count["count"], 5)
+        self.assertEqual(count["count"], 2)
 
-        first_two = asyncio.run(read_sunny_chats("intent-flow", start=1, end=2))
-        self.assertTrue(first_two["ok"], first_two)
-        self.assertEqual(first_two["mode"], "range")
-        self.assertEqual([message["index"] for message in first_two["messages"]], [1, 2])
-        self.assertIn("Type: discovery_assignment", first_two["messages"][0]["content"])
-        self.assertIn("Type: intent_writer_assignment", first_two["messages"][1]["content"])
+        both = asyncio.run(read_sunny_chats("intent-flow", start=1, end=2))
+        self.assertTrue(both["ok"], both)
+        self.assertEqual(both["mode"], "range")
+        self.assertEqual([message["index"] for message in both["messages"]], [1, 2])
+        self.assertIn("Intent brief approved", both["messages"][0]["content"])
+        self.assertEqual(both["messages"][1]["author"], "Intent Writer")
 
     def test_cross_agent_handoff_chat_and_ben_completion_handoff(self) -> None:
         created = asyncio.run(
@@ -1501,13 +1386,16 @@ No unresolved gaps block Iris's next stage.
             [func.__name__ for func in TOOLSETS["sunny"]],
             [
                 "create_sunny_intent",
-                "create_sunny_discovery_assignment",
-                "create_sunny_intent_writer_assignment",
-                "create_sunny_review_assignment",
                 "handoff_sunny_to_iris",
                 "append_sunny_chat",
                 "count_sunny_chats",
                 "read_sunny_chats",
+                "start_session",
+                "resume_session",
+                "list_sessions",
+                "read_session_result",
+                "set_session_priority",
+                "pause_session",
             ]
             + handoff
             + shared,
@@ -1552,6 +1440,12 @@ No unresolved gaps block Iris's next stage.
         server = create_mcp("ben")
         self.assertIn("Example", server.instructions)
         self.assertNotIn("Atte" + "stara", server.instructions)
+
+    def test_sunny_has_no_subagent_assignment_tools(self) -> None:
+        names = [func.__name__ for func in TOOLSETS["sunny"]]
+        self.assertFalse([n for n in names if n.endswith("_assignment")])
+        self.assertIn("create_sunny_intent", names)
+        self.assertIn("handoff_sunny_to_iris", names)
 
     def test_iris_cannot_post_to_the_handoff_chat_directly(self) -> None:
         iris_names = [func.__name__ for func in TOOLSETS["iris"]]

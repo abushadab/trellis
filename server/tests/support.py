@@ -16,6 +16,7 @@ class ProjectTestCase(unittest.TestCase):
 
     design_authority = False
     context_window_tokens: int | None = None
+    claude_executable = "claude"
 
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()
@@ -31,6 +32,7 @@ class ProjectTestCase(unittest.TestCase):
             design_authority=self.design_authority,
             claude_projects_root=self.projects_root,
             context_window_tokens=self.context_window_tokens,
+            claude_executable=self.claude_executable,
         )
         settings_module.configure(self.settings)
         self.addCleanup(self.tmp.cleanup)

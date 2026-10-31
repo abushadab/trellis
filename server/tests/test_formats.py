@@ -12,7 +12,7 @@ from trellis_mcp.ben.transport import append_ben_chat, create_ben_planner_assign
 from trellis_mcp.handoffs.transport import append_handoff_chat, read_handoff_chats
 from trellis_mcp.iris.transport import create_iris_scout_assignment, create_iris_specflow
 from trellis_mcp.secrets_guard import contains_secret
-from trellis_mcp.sunny.transport import create_sunny_discovery_assignment, create_sunny_intent
+from trellis_mcp.sunny.transport import create_sunny_intent
 from trellis_mcp.workflow_common import CHAT_HEADER_RE, parse_chat_messages
 
 ISO_LOCAL = re.compile(r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d[+-]\d\d:\d\d$")
@@ -56,7 +56,6 @@ class FormatTests(ProjectTestCase):
             asyncio.run(create_iris_specflow("sf-1", "T", "Scope.")),
             asyncio.run(create_iris_scout_assignment("sf-1", "S1", "Scout", "src", "lens", "goal", "scope")),
             asyncio.run(create_sunny_intent("in-1", "T", "Scope.")),
-            asyncio.run(create_sunny_discovery_assignment("in-1", "D1", "Disc", "src", "goal", "scope")),
         ]
         seen = 0
         for result in results:
@@ -64,7 +63,7 @@ class FormatTests(ProjectTestCase):
             for key, value in self.paths_in(result):
                 seen += 1
                 self.assertTrue(value.startswith(str(self.project) + "/"), (key, value))
-        self.assertGreaterEqual(seen, 10)
+        self.assertGreaterEqual(seen, 8)
 
     def test_assignment_files_embed_absolute_paths(self) -> None:
         asyncio.run(create_iris_specflow("sf-1", "T", "Scope."))

@@ -68,6 +68,8 @@ record = {
     "resumed": "--resume" in argv,
     "json_schema": option("--json-schema"),
     "permission_mode": option("--permission-mode"),
+    "bg_ceiling": os.environ.get("CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS"),
+    "stdin_eof": sys.stdin.read() == "",
 }
 with (root / "invocations.jsonl").open("a") as handle:
     handle.write(json.dumps(record) + "\n")

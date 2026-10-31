@@ -13,13 +13,18 @@ from .ben.transport import (
 from .handoff_tools import append_handoff, count_handoffs, read_handoffs
 from .iris.tools import IRIS_TOOL_FUNCTIONS, handoff_to_ben
 from .registry_tools import check_subagent_context, check_subagent_slot, register_subagent
+from .session_tools import (
+    list_sessions,
+    pause_session,
+    read_session_result,
+    resume_session,
+    set_session_priority,
+    start_session,
+)
 from .sunny.transport import (
     append_sunny_chat,
     count_sunny_chats,
-    create_sunny_discovery_assignment,
     create_sunny_intent,
-    create_sunny_intent_writer_assignment,
-    create_sunny_review_assignment,
     handoff_sunny_to_iris,
     read_sunny_chats,
 )
@@ -55,16 +60,31 @@ GLOBAL_TOOL_FUNCTIONS = [
     check_subagent_context,
 ]
 
+SESSION_TOOL_FUNCTIONS = [
+    start_session,
+    resume_session,
+    list_sessions,
+    read_session_result,
+    set_session_priority,
+    pause_session,
+]
+
+SESSION_TOOL_FUNCTIONS = [
+    start_session,
+    resume_session,
+    list_sessions,
+    read_session_result,
+    set_session_priority,
+    pause_session,
+]
+
 SUNNY_BASE_TOOL_FUNCTIONS = [
     create_sunny_intent,
-    create_sunny_discovery_assignment,
-    create_sunny_intent_writer_assignment,
-    create_sunny_review_assignment,
     handoff_sunny_to_iris,
     append_sunny_chat,
     count_sunny_chats,
     read_sunny_chats,
-]
+] + SESSION_TOOL_FUNCTIONS
 
 TOOLSETS = {
     "ben": BEN_BASE_TOOL_FUNCTIONS + HANDOFF_TOOL_FUNCTIONS + GLOBAL_TOOL_FUNCTIONS,
