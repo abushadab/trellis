@@ -165,3 +165,24 @@ Keep from the source: `subagentPromptCacheTtl: "1h"`, `disableBundledSkills: tru
 - Commit locally in `/home/abu/trellis` with the repo's configured identity, one commit per coherent step, message describing the change. No push, no remotes.
 - Do not add a `Co-Authored-By` or `Signed-off-by` trailer.
 - Keep prompts in the existing plain-English style (`STYLE.md` from the source; copy it into templates).
+
+## 10. Sunny: sessions and usage watcher (phase B)
+
+Sunny is the interactive session (`cd .trellis/agents/sunny && claude`). Sunny drives Iris and Ben through these `trellis` MCP tools (Sunny toolset only):
+
+| Tool | Does |
+| --- | --- |
+| `start_session(agent, prompt, label, priority=50)` | `agent` is `iris` or `ben`. Starts `claude -p <prompt> --session-id <uuid> --output-format stream-json --verbose --permission-mode bypassPermissions` in the background from `{{path:agent_root:<agent>}}`, with `CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0` and stdin `/dev/null`. Records `state/sunny/sessions/<session_id>.json` (agent, label, priority, pid, status, log path, created). Returns `session_id`. Higher priority = more important. |
+| `resume_session(session_id, message)` | `claude -p --resume <session_id> <message>`, same flags. Refuses if the session is still running. |
+| `list_sessions()` | Every session: agent, label, priority, status (`running`, `idle`, `paused`, `failed`), pid, last `Turn Status`. |
+| `read_session_result(session_id)` | The final result text of the latest turn plus the parsed `## Turn Status` and `## Decision needed` blocks. |
+| `set_session_priority(session_id, priority)` | Changes the priority. |
+| `pause_session(session_id)` | SIGINT to that exact PID (never a name pattern), status `paused`. Resuming later uses `resume_session`. |
+
+CLI helpers that Sunny runs through Bash in the background, so the harness wakes Sunny when they exit:
+
+- `trellis wait --project <dir> [--session <id> ...]`: exits when any named (or any running) session finishes its turn. Prints session id and its `Status:` line.
+- `trellis usage --project <dir>`: prints the 5-hour and 7-day utilization and reset times. It reads the Claude Code OAuth token from `~/.claude/.credentials.json` (honours `CLAUDE_CONFIG_DIR`) and calls `GET https://api.anthropic.com/api/oauth/usage` with header `anthropic-beta: oauth-2025-04-20`. If no token is readable (for example a macOS keychain login), it prints `usage: unavailable` and exits 0, and the watcher stays off.
+- `trellis watch-usage --project <dir> [--threshold N] [--interval 300]`: polls the usage endpoint. When 5-hour utilization reaches the threshold (default `sunny.usage_threshold`, 75), it pauses the lowest-priority running session, then exits printing `PAUSED <session_id> at <pct>%, resets <time>`. It also exits printing `RESET` once a reset time has passed while sessions are paused. Sunny relaunches it after acting, and resumes paused sessions after the reset.
+
+Only Sunny talks to the user. Sunny relays `needs_decision` questions: it answers `technical` ones itself when `sunny.autonomy` is `technical` (recorded as "decided by Sunny under delegated authority"), and brings `product`, `safety` and `data` ones to the user, in plain English, with options and a recommendation. Sunny asks the user before any push, PR or other remote action, and before deleting branches or data.
