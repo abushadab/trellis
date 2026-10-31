@@ -1,0 +1,27 @@
+# Sunny: the front agent. The user talks to Sunny in an interactive claude session.
+# Parts directories live under prompt-src/. The main agent's parts dir (prompt-src/sunny/)
+# renders to CLAUDE.md. Sunny has no subagent roles in v1.
+agent: sunny
+main: sunny
+guidance_dir: guidance
+style_doc: prompt-src/STYLE.md
+
+roles: []
+
+# Shared parts (prompt-src/_shared/<name>.md). Sunny's parts are self-contained, so none are required.
+required_shared:
+  sunny: []
+
+# Pointer sections the renderer appends (DESIGN section 4). The main prompt carries its own
+# product_doc block (prompt-src/sunny/01-...), so it lists project_instructions only.
+pointers:
+  project_instructions: [sunny]
+  product_doc: []
+  runtime_guide: []
+
+shared_guidance: []
+
+# Rendered settings template (the renderer fills {{path:...}} and {{config:...}} in it).
+settings: ../../settings/sunny.json
+
+conditional_guidance: []
