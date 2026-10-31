@@ -29,11 +29,17 @@ KNOWN_KEYS = {
     "commit_specs",
     "tools",
     "models",
+    "mode",
+    "efforts",
     "sunny",
     "claude_projects_root",
     "context_window_tokens",
     "claude_executable",
 }
+
+
+MODES = ("standard", "saver")
+EFFORT_LEVELS = ("low", "medium", "high", "xhigh", "max")
 
 
 class ConfigError(ValueError):
@@ -76,6 +82,8 @@ class TrellisConfig:
     commit_specs: bool = True
     tools: ToolsConfig = field(default_factory=ToolsConfig)
     models: dict[str, str] = field(default_factory=dict)
+    mode: str = "standard"
+    efforts: dict[str, str] = field(default_factory=dict)
     sunny: SunnyConfig = field(default_factory=SunnyConfig)
     claude_projects_root: Path | None = None
     context_window_tokens: int | None = None
@@ -165,6 +173,8 @@ class TrellisConfig:
                 "playwright": self.tools.playwright,
             },
             "models": dict(self.models),
+            "mode": self.mode,
+            "efforts": dict(self.efforts),
             "sunny": {
                 "autonomy": self.sunny.autonomy,
                 "usage_threshold": self.sunny.usage_threshold,
@@ -269,6 +279,14 @@ def parse_config(data: Any, project_dir: Path) -> TrellisConfig:
         "models must map role names to model names",
     )
 
+    mode = data.get("mode", "standard")
+    _expect(mode in MODES, "mode must be standard or saver")
+    efforts_raw = _mapping(data, "efforts")
+    _expect(
+        all(isinstance(k, str) and v in EFFORT_LEVELS for k, v in efforts_raw.items()),
+        "efforts must map role names to low, medium, high, xhigh or max",
+    )
+
     commit_specs = data.get("commit_specs", True)
     _expect(isinstance(commit_specs, bool), "commit_specs must be true or false")
 
@@ -303,6 +321,8 @@ def parse_config(data: Any, project_dir: Path) -> TrellisConfig:
         commit_specs=commit_specs,
         tools=tools,
         models=dict(models_raw),
+        mode=mode,
+        efforts=dict(efforts_raw),
         sunny=SunnyConfig(autonomy=autonomy, usage_threshold=threshold),
         claude_projects_root=Path(projects_raw).expanduser() if projects_raw else None,
         context_window_tokens=window,

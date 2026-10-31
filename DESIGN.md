@@ -90,7 +90,9 @@ tools:
   serena: false                   # true = Serena MCP at serena_url
   serena_url: null
   playwright: auto                # auto | true | false; auto = enable if npx exists
+mode: standard                    # standard | saver; tables in templates/modes.yml
 models: {}                        # optional per-role overrides, e.g. {implementation_engineer: sonnet}
+efforts: {}                       # optional per-role effort overrides
 sunny:
   autonomy: technical             # technical (Sunny decides technical/process; product/safety/data go to user) | none (everything to user)
   usage_threshold: 75             # percent of the 5-hour window; pause lowest-priority session

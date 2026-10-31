@@ -63,10 +63,26 @@ Settings live in `.trellis/config.yml`. Every key, with a comment, is in
 | `git.*` | Branch prefixes and the commit identity for agent commits |
 | `commit_specs` | Whether specs and plans are committed by the agents |
 | `tools.serena`, `tools.playwright` | Optional MCP tools |
-| `models` | Per-role model overrides |
+| `mode` | `standard` (proven setup) or `saver` (cost saving, see below) |
+| `models`, `efforts` | Per-role model and effort overrides on top of the mode |
 | `sunny.autonomy`, `sunny.usage_threshold` | What Sunny may decide alone, and the usage pause level |
 
 After editing the config, run `/trellis:update`.
+
+### Modes
+
+| Agent | `standard` | `saver` |
+| --- | --- | --- |
+| Sunny, Iris | Opus medium | Opus medium |
+| Ben | Opus medium | Sonnet high |
+| planner, assignment-engineer, spec-writer | Opus medium | Opus medium |
+| plan_reviewer, implementation_reviewer, independent_final_validator, investigator, spec-reviewer, general_advisor | Opus high | Opus medium |
+| assignment-reviewer | Opus medium | Sonnet high |
+| reconciliation_advisor | Opus high | Sonnet high |
+| implementation_engineer, researcher | Sonnet high | Sonnet high |
+| scout | Sonnet medium | Sonnet medium |
+
+`saver` never runs Opus at high effort. Switch by setting `mode` and running `/trellis:update`; running sessions keep their old setting until they are started again.
 
 ## Folder layout
 

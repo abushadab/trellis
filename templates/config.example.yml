@@ -34,8 +34,13 @@ tools:
   serena_url: null                # Serena MCP URL. Needed when serena is true.
   playwright: auto                # auto | true | false. auto = on when npx exists.
 
-models: {}                        # Optional per-role model overrides,
-                                  # e.g. {implementation_engineer: sonnet, spec_writer: opus}.
+mode: standard                    # standard = the proven setup (Opus, high effort on reviews).
+                                  # saver = cost saving: no Opus at high effort, Sonnet where a later
+                                  # Opus check covers the role. The tables are in templates/modes.yml.
+models: {}                        # Optional per-role model overrides on top of the mode,
+                                  # e.g. {implementation_engineer: sonnet, spec-writer: opus}.
+efforts: {}                       # Optional per-role effort overrides (low | medium | high | xhigh | max),
+                                  # e.g. {ben: medium}. Roles and main agents (sunny, iris, ben) both work.
 
 sunny:
   autonomy: technical             # technical = Sunny decides technical and process questions;

@@ -392,7 +392,9 @@ def discover_targets(
         if name != role.name:
             raise RenderError(f"{fm_file} declares `name: {name}` but the manifest role is `{role.name}`")
         parts_dirs.add(role.parts)
-        text = apply_model_override(text, ctx.config.models.get(name))
+        model, effort = agent_profile(name, ctx)
+        text = apply_frontmatter_value(text, "model", model)
+        text = apply_frontmatter_value(text, "effort", effort)
         targets.append(Target(name, parts_dir, agent_root / ".claude" / "agents" / f"{name}.md", text))
 
     actual = {
@@ -408,12 +410,32 @@ def discover_targets(
     return targets
 
 
-def apply_model_override(frontmatter: str, model: str | None) -> str:
-    if not model:
+def agent_profile(name: str, ctx: RenderContext) -> tuple[str | None, str | None]:
+    """Model and effort for an agent or role: the mode's table, then per-role overrides."""
+    modes_file = ctx.templates_root / "modes.yml"
+    entry: dict = {}
+    if modes_file.is_file():
+        table = yaml.safe_load(modes_file.read_text(encoding="utf-8")) or {}
+        mode_table = table.get(ctx.config.mode)
+        if not isinstance(mode_table, dict):
+            raise RenderError(f"{modes_file}: no `{ctx.config.mode}` mode")
+        entry = mode_table.get(name) or {}
+    model = ctx.config.models.get(name) or entry.get("model")
+    effort = ctx.config.efforts.get(name) or entry.get("effort")
+    return model, effort
+
+
+def apply_frontmatter_value(frontmatter: str, key: str, value: str | None) -> str:
+    if not value:
         return frontmatter
-    if re.search(r"(?m)^model:.*$", frontmatter):
-        return re.sub(r"(?m)^model:.*$", lambda _m: f"model: {model}", frontmatter, count=1)
-    return re.sub(r"(?m)^(name:.*)$", lambda m: f"{m.group(1)}\nmodel: {model}", frontmatter, count=1)
+    pattern = rf"(?m)^{key}:.*$"
+    if re.search(pattern, frontmatter):
+        return re.sub(pattern, lambda _m: f"{key}: {value}", frontmatter, count=1)
+    return re.sub(r"(?m)^(name:.*)$", lambda m: f"{m.group(1)}\n{key}: {value}", frontmatter, count=1)
+
+
+def apply_model_override(frontmatter: str, model: str | None) -> str:
+    return apply_frontmatter_value(frontmatter, "model", model)
 
 
 def load_shared_parts(prompt_src: Path) -> dict[str, str]:
@@ -576,9 +598,11 @@ def render_settings(agent: str, ctx: RenderContext, path: Path) -> bytes:
         if existing not in directories:
             directories.append(existing)
     permissions["additionalDirectories"] = directories
-    model = ctx.config.models.get(agent)
+    model, effort = agent_profile(agent, ctx)
     if model:
         settings["model"] = model
+    if effort:
+        settings["effortLevel"] = effort
     return (json.dumps(settings, indent=2) + "\n").encode("utf-8")
 
 
