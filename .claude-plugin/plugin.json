@@ -1,0 +1,11 @@
+{
+  "name": "trellis",
+  "version": "0.1.0",
+  "description": "A three-agent workflow for Claude Code: Sunny talks to you, Iris writes specs, Ben plans, builds and validates. Rendered per project, nothing runs at plugin level.",
+  "author": {
+    "name": "Abu Shadab"
+  },
+  "repository": "https://github.com/abushadab/trellis",
+  "license": "MIT",
+  "keywords": ["workflow", "agents", "spec", "orchestration"]
+}

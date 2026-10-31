@@ -1,0 +1,50 @@
+# Trellis project config. Copy to <project>/.trellis/config.yml (/trellis:init does this for you).
+# Relative paths in product_doc, runtime_guide, design_authority and project_instructions are
+# read against repo_root. repo_root itself is read against the project directory.
+
+project_name: Example             # Required. Shown in agent prompts.
+
+repo_root: .                      # The code repository, relative to the project directory.
+
+project_instructions:             # Files every role reads first, when they exist.
+  - AGENTS.md
+  - CLAUDE.md
+
+product_doc: null                 # Optional path: product scope and rules. Null = none.
+runtime_guide: null               # Optional path: how to run, test and seed the app locally. Null = none.
+design_authority: null            # Optional path or URL: UI spec or design lab. Setting it turns on the
+                                  # design rules and the design_conformance review lens.
+reference_products: []            # Optional product names for behavior research only.
+                                  # Agents never copy their code, text or assets.
+
+stage: pre_production             # pre_production | production.
+                                  # pre_production means no backward-compatibility work.
+
+git:
+  branch_prefix: ben/             # Ben's integration branch per workitem, e.g. ben/<workitem-id>.
+  work_branch_prefix: work/       # The engineer's working branch prefix.
+  commit_name: null               # Commit author name for agent commits. Null = use git config.
+  commit_email: null              # Commit author email. Null = use git config.
+                                  # Both must be set for the git_identity rules to apply.
+
+commit_specs: true                # true = the spec writer commits specs and the planner commits plans.
+
+tools:
+  serena: false                   # true = add the Serena MCP server to the rendered .mcp.json files.
+  serena_url: null                # Serena MCP URL. Needed when serena is true.
+  playwright: auto                # auto | true | false. auto = on when npx exists.
+
+models: {}                        # Optional per-role model overrides,
+                                  # e.g. {implementation_engineer: sonnet, spec_writer: opus}.
+
+sunny:
+  autonomy: technical             # technical = Sunny decides technical and process questions;
+                                  #   product, safety and data questions go to you.
+                                  # none = every decision goes to you.
+  usage_threshold: 75             # Percent of the 5-hour usage window. At this level the usage watcher
+                                  # pauses the lowest-priority running session.
+
+claude_projects_root: null        # Where Claude Code keeps transcripts.
+                                  # Null = $CLAUDE_CONFIG_DIR/projects, else ~/.claude/projects.
+context_window_tokens: null       # Null = 200000 for a subagent, 1000000 when its model id says [1m]
+                                  # or its usage already passed 200000.

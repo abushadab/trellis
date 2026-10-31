@@ -1,0 +1,14 @@
+{
+  "name": "trellis",
+  "description": "Trellis: a three-agent workflow (Sunny, Iris, Ben) for Claude Code",
+  "owner": {
+    "name": "Abu Shadab"
+  },
+  "plugins": [
+    {
+      "name": "trellis",
+      "source": "./",
+      "description": "Installs a three-agent spec-and-build workflow into any git repository: Sunny talks to you, Iris writes specs, Ben builds and validates."
+    }
+  ]
+}
