@@ -6,17 +6,11 @@ Trellis is a project-agnostic Claude Code plugin that installs a three-agent wor
 - **Iris** (formerly Theo): the specification orchestrator. Scouting, research, advisors, assignment engineer and reviewer, spec writer and reviewer. Produces Ben-ready single specs.
 - **Ben**: the execution orchestrator. Planner, plan reviewer, investigator, implementation engineer, implementation reviewer, independent final validator.
 
-The workflow was proven on a real project. **Trim project facts, never roles, gates or format rules.** This document is the contract every builder follows. If something here is wrong, say so in your final report; do not silently diverge.
+The workflow was proven on a real project. **Trim project facts, never roles, gates or format rules.** This document is the contract for anyone changing Trellis.
 
-Sources being ported (read-only, never edit):
+No project-specific names, personal paths, hostnames, ports or time zones belong in this repo; `server/tests` and the contract tests guard this.
 
-- prompts: `/home/abu/project-attestara/claude-workspace/` (`agents/ben`, `agents/theo`, `hooks/`, `testing/`, `tools/playwright-mcp`)
-- MCP server: `/home/abu/project-attestara/attestara-workflow/`
-- inventories: `/tmp/claude-1000/-home-abu-project-attestara/52a6ee96-e6f9-4ed8-901e-cd145e40b7e8/scratchpad/inventory/{mcp-server,ben-prompts,theo-prompts}.md`
-
-No Attestara, Probo, KI-Quadrat, `ghki`, `ai2.at`, `/home/abu`, port numbers or Bangladesh time may remain in this repo, except in `DESIGN.md`'s source list above.
-
-## 1. Repository layout (`/home/abu/trellis`)
+## 1. Repository layout
 
 ```text
 .claude-plugin/marketplace.json     # marketplace "trellis"; one plugin, source "./"

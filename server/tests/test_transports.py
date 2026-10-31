@@ -1233,7 +1233,7 @@ Implemented.
             handoff_sunny_to_iris(
                 intent_id="intent-flow",
                 intent_brief_path="intents/intent-flow/briefs/intent-brief.md",
-                task_id="THEO-001",
+                task_id="IRIS-001",
                 task_name="Create Iris specflow",
             )
         )
@@ -1252,7 +1252,7 @@ Implemented.
             handoff_sunny_to_iris(
                 intent_id="intent-flow",
                 intent_brief_path="intents/intent-flow/briefs/intent-brief.md",
-                task_id="THEO-001",
+                task_id="IRIS-001",
                 task_name="Create Iris specflow",
                 status="ready_for_iris",
             )
