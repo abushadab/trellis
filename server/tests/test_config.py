@@ -105,6 +105,14 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(settings.paths, Paths.for_project(project))
         self.assertFalse(settings.design_authority)
 
+    def test_claude_executable_defaults_to_claude_and_is_configurable(self) -> None:
+        self.assertEqual(parse_config({"project_name": "X"}, self.root).claude_executable, "claude")
+        config = parse_config({"project_name": "X", "claude_executable": "/opt/claude"}, self.root)
+        self.assertEqual(config.claude_executable, "/opt/claude")
+        self.assertEqual(Settings.from_config(config).claude_executable, "/opt/claude")
+        with self.assertRaisesRegex(ConfigError, "claude_executable"):
+            parse_config({"project_name": "X", "claude_executable": ""}, self.root)
+
     def test_default_projects_root_is_the_claude_directory(self) -> None:
         settings = Settings.for_directory(self.root)
         self.assertEqual(settings.projects_root.name, "projects")

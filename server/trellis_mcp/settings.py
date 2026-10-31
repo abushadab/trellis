@@ -26,6 +26,8 @@ class Settings:
     claude_projects_root: Path | None = None
     # None means "infer from the transcript's model" (200k unless a 1M model).
     context_window_tokens: int | None = None
+    claude_executable: str = "claude"
+    usage_threshold: int = 75
     reuse_threshold_percent: int = 75
     slot_reuse_percent: int = 30
     max_author_length: int = MAX_AUTHOR_LENGTH
@@ -48,6 +50,8 @@ class Settings:
             design_authority=config.doc_exists(config.design_authority),
             claude_projects_root=config.claude_projects_root,
             context_window_tokens=config.context_window_tokens,
+            claude_executable=config.claude_executable,
+            usage_threshold=config.sunny.usage_threshold,
         )
 
     @classmethod

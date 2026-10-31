@@ -100,15 +100,20 @@ models: {}                        # optional per-role overrides, e.g. {implement
 sunny:
   autonomy: technical             # technical (Sunny decides technical/process; product/safety/data go to user) | none (everything to user)
   usage_threshold: 75             # percent of the 5-hour window; pause lowest-priority session
+claude_projects_root: null        # where Claude Code keeps transcripts; null = $CLAUDE_CONFIG_DIR/projects or ~/.claude/projects
+context_window_tokens: null       # null = per subagent: 1000000 if its model id says [1m] or its usage already passed 200000, else 200000
+claude_executable: null           # null = `claude` on PATH; Sunny's session launcher runs this (tests point it at a fake)
 ```
+
+Relative paths in `product_doc`, `runtime_guide`, `design_authority` and `project_instructions` are read against `repo_root`; `repo_root` is read against the project directory. A URL in `design_authority` is kept as written. Unknown top-level keys are reported by `trellis doctor` and otherwise ignored.
 
 ## 4. Template syntax (renderer)
 
 Existing `build.py` rules stay: numbered parts `NN-*.md` concatenate, `{{shared:name}}` expands `_shared/name.md`, `frontmatter*.yml` gives subagent frontmatter, `REQUIRED_SHARED` checks. Added:
 
 - `{{config:key}}` / `{{config:git.branch_prefix}}`: value from config (paths rendered absolute). Unknown key = render error.
-- `{{path:name}}`: computed absolute paths: `project_dir`, `repo_root`, `trellis_dir`, `state_dir`, `agent_root:<agent>`, `specflows_root`, `workitems_root`, `intents_root`, `handoff_chat`, `guidance:<agent>`.
-- `{{if:flag}} ... {{/if}}` (may span lines; no nesting needed but allowed; `{{else}}` allowed). Flags: `serena`, `playwright`, `product_doc`, `runtime_guide`, `design_authority`, `reference_products`, `pre_production`, `commit_specs`, `git_identity`.
+- `{{path:name}}`: computed absolute paths: `project_dir`, `repo_root`, `trellis_dir`, `state_dir`, `agent_root:<agent>`, `specflows_root`, `workitems_root`, `intents_root`, `handoff_chat`, `guidance:<agent>`, plus `plugin_root` (the directory holding `server/` and `templates/`), `server_dir` (`<plugin_root>/server`) and `trellis_cmd` (`uvx --from <plugin_root>/server trellis`, for hook commands and the commands Sunny runs).
+- `{{if:flag}} ... {{/if}}` (may span lines or sit inline in one line, nesting allowed, `{{else}}` allowed, `{{if:!flag}}` negates; a tag alone on its line removes the whole line, and runs of blank lines in rendered Markdown collapse to one outside code fences). Flags: `serena`, `playwright`, `product_doc`, `runtime_guide`, `design_authority`, `reference_products`, `pre_production`, `commit_specs`, `git_identity` (true only when both `git.commit_name` and `git.commit_email` are set). A document flag is true only when the document is configured and exists.
 - Frontmatter may use flags too (e.g. `mcpServers` Playwright only `{{if:playwright}}`).
 - Pointer sections ("Read X completely before ...") are emitted from config: `project_instructions` (all roles), `runtime_guide` (Ben, engineer, reviewer, validator, investigator), `product_doc` (orchestrators and spec roles). Missing optional files are skipped, not errors.
 
@@ -183,6 +188,8 @@ CLI helpers that Sunny runs through Bash in the background, so the harness wakes
 
 - `trellis wait --project <dir> [--session <id> ...]`: exits when any named (or any running) session finishes its turn. Prints session id and its `Status:` line.
 - `trellis usage --project <dir>`: prints the 5-hour and 7-day utilization and reset times. It reads the Claude Code OAuth token from `~/.claude/.credentials.json` (honours `CLAUDE_CONFIG_DIR`) and calls `GET https://api.anthropic.com/api/oauth/usage` with header `anthropic-beta: oauth-2025-04-20`. If no token is readable (for example a macOS keychain login), it prints `usage: unavailable` and exits 0, and the watcher stays off.
-- `trellis watch-usage --project <dir> [--threshold N] [--interval 300]`: polls the usage endpoint. When 5-hour utilization reaches the threshold (default `sunny.usage_threshold`, 75), it pauses the lowest-priority running session, then exits printing `PAUSED <session_id> at <pct>%, resets <time>`. It also exits printing `RESET` once a reset time has passed while sessions are paused. Sunny relaunches it after acting, and resumes paused sessions after the reset.
+- `trellis watch-usage --project <dir> [--threshold N] [--interval 300]`: polls the usage endpoint. When 5-hour utilization reaches the threshold (default `sunny.usage_threshold`, 75), it pauses the lowest-priority running session (ties: the most recently started), records the reset time on that session, then exits printing `PAUSED <session_id> at <pct>%, resets <time>`. It also exits printing `RESET` once the reset time of a session it paused has passed, `IDLE ...` when no session is running or waiting for a reset, and `usage: unavailable` when no token is readable. A session paused by hand carries no reset time and never triggers `RESET`. Sunny relaunches it after acting, and resumes paused sessions after the reset.
+
+Sessions are launched detached (`start_new_session`, stdin `/dev/null`, output to `state/sunny/sessions/<id>/turn-<n>.jsonl`), so they outlive the MCP server process. Status is derived from the recorded PID (with its start time, so a recycled PID is never signalled) plus the stream-json log: while the PID lives the session is `running`; afterwards the last `result` event decides (`idle` on success, `failed` on an error or no result), and `paused` stays until `resume_session`. Sunny has no subagents in v1, so its toolset has no `create_sunny_*_assignment` tools; it keeps `create_sunny_intent`, `handoff_sunny_to_iris`, the Sunny chat tools and the shared handoff tools. `trellis doctor` reports whether `trellis usage` can read a token.
 
 Only Sunny talks to the user. Sunny relays `needs_decision` questions: it answers `technical` ones itself when `sunny.autonomy` is `technical` (recorded as "decided by Sunny under delegated authority"), and brings `product`, `safety` and `data` ones to the user, in plain English, with options and a recommendation. Sunny asks the user before any push, PR or other remote action, and before deleting branches or data.

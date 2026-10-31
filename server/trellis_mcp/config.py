@@ -32,6 +32,7 @@ KNOWN_KEYS = {
     "sunny",
     "claude_projects_root",
     "context_window_tokens",
+    "claude_executable",
 }
 
 
@@ -78,6 +79,7 @@ class TrellisConfig:
     sunny: SunnyConfig = field(default_factory=SunnyConfig)
     claude_projects_root: Path | None = None
     context_window_tokens: int | None = None
+    claude_executable: str = "claude"
     unknown_keys: tuple[str, ...] = ()
 
     # -- derived views -------------------------------------------------
@@ -281,6 +283,12 @@ def parse_config(data: Any, project_dir: Path) -> TrellisConfig:
         "claude_projects_root must be a path string or null",
     )
 
+    executable = data.get("claude_executable")
+    _expect(
+        executable is None or (isinstance(executable, str) and executable.strip() != ""),
+        "claude_executable must be a non-empty string or null",
+    )
+
     return TrellisConfig(
         project_dir=project_dir,
         project_name=name.strip(),
@@ -298,6 +306,7 @@ def parse_config(data: Any, project_dir: Path) -> TrellisConfig:
         sunny=SunnyConfig(autonomy=autonomy, usage_threshold=threshold),
         claude_projects_root=Path(projects_raw).expanduser() if projects_raw else None,
         context_window_tokens=window,
+        claude_executable=executable.strip() if executable else "claude",
         unknown_keys=tuple(sorted(str(k) for k in data if k not in KNOWN_KEYS)),
     )
 
