@@ -1,6 +1,6 @@
 # Implementation Engineer Local Git Workflow
 
-Use this guide only for authorized Implementation Engineer changes in `{{path:repo_root}}`, or, for a lane workitem, in the `Workitem root` your launch names. Run each Git command below through `git -C <REPO_ROOT>`, where `REPO_ROOT` is the workitem root for a lane workitem.
+Use this guide only for authorized Implementation Engineer changes in `{{path:repo_root}}`. Run each Git command below through `git -C <REPO_ROOT>`, where `REPO_ROOT` is `{{path:repo_root}}`.
 
 ## Commit the Implementation
 
@@ -8,13 +8,13 @@ The user set up this workflow, so the commits this guide defines are user-author
 
 After implementation and engineer-owned validation:
 
-1. Review `git status --short` and the full worktree diff.
+1. Review `git status --short` and the full working-tree diff.
 2. Stage only authorized paths or hunks, with explicit `git add -- <path>...`.
 3. Inspect `git diff --cached --name-only` and the full `git diff --cached`.
 4. Run `git diff --cached --check`.
 5. Commit with both author and committer set to:
 
-   `Abu Shadab <abu@ai2.at>` (workspace `AGENTS.md`), with no `Signed-off-by` trailer
+   {{if:git_identity}}`{{config:git.commit_name}} <{{config:git.commit_email}}>`{{else}}the identity set in the repository's Git config{{/if}}, with no `Signed-off-by` trailer
 
    Use a short subject in the imperative. For substantial work, add a compact body with `Why:`, `What changed:`, and `Validation:`. Add no trailers that copy packet contents.
 

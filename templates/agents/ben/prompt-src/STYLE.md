@@ -9,7 +9,7 @@ A prompt should read like a clear brief to a capable colleague. Every rule stays
 ## Rules
 
 1. **Keep every behavior.** Do not add a rule, drop a rule, or change a threshold while rewording. If two sentences say the same thing, keep one. If a rule is unclear, keep its meaning and flag it; do not guess a new meaning.
-2. **Keep exact contracts unchanged.** Tool names, file paths, chat-pointer formats (`Plan ready:`, `Review ready:`, `Implementation packet:`, `Validation packet:`, `Investigation packet:`, `Type: …`), `Action:` values, launch-input field names, status values, template headings and field labels, source-ID formats, Git commit message and author formats, `AUTOMATION_ROUTING_BLOCKED_V1`, and `{{shared:…}}` placeholder lines stay exactly as they are.
+2. **Keep exact contracts unchanged.** Tool names, file paths, chat-pointer formats (`Plan ready:`, `Review ready:`, `Implementation packet:`, `Validation packet:`, `Investigation packet:`, `Type: …`), `Action:` values, launch-input field names, status values, template headings and field labels, source-ID formats, Git commit message and author formats, `AUTOMATION_ROUTING_BLOCKED_V1`, the `## Turn Status` block, and the template placeholders (`{{shared:…}}`, `{{config:…}}`, `{{path:…}}`, `{{if:…}}` with `{{else}}` and `{{/if}}`) stay exactly as they are.
 3. **Use plain words.** Prefer common words over abstract nouns.
 4. **One idea per sentence.** Keep most sentences under about 25 words. Split long condition lists into bullets.
 5. **Use "you" and active voice.**
@@ -20,7 +20,7 @@ A prompt should read like a clear brief to a capable colleague. Every rule stays
 10. **Use the glossary below** so every role uses the same plain term for the same idea.
 11. **Merge overlaps, keep behavior.** When a rule appears twice inside one role (in two parts, or in a part and its guide), keep it once where the agent needs it first, and point to it from the other place if needed. Never merge two rules whose conditions or thresholds differ, even slightly. Aim for about the same length as before, not longer.
 12. **When a long condition repeats, name it once.** Define a short plain term where it is first used, then reuse it.
-13. **Keep names other files depend on.** Do not rename a heading, field label, or section name that another role's prompt, Iris's guides, the Attestara Workflow server or agent loop, or `claude-workspace/testing/test_completion_prompt_contract.py` refers to. Search before renaming.
+13. **Keep names other files depend on.** Do not rename a heading, field label, or section name that another role's prompt, Iris's guides, the Trellis MCP server, the renderer, or the prompt contract tests under `tests/` refers to. Search before renaming.
 14. **Keep each role's permissions separate.** The Planner and Plan Reviewer may not run tests or builds; the Implementation Reviewer may; the Validator and Investigator have their own runtime limits. Rewording must not blur these.
 15. **Do not restate what Claude Code enforces.** A role's `tools:` list, the settings deny and ask rules, and Claude Code's own tool guidance already apply. Keep a prompt rule only when it adds a condition the harness cannot check, such as which single file a role may write.
 

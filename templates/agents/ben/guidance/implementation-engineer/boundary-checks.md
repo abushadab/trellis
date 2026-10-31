@@ -8,7 +8,7 @@ The preflight in your prompt says when to read this guide. Run only the checks t
 - **Transactions or concurrency:** name the point where operations are serialized. Account for awaits, commits, retries, proxy and pool boundaries, and work in flight. For a capacity, one-winner, or exactly-once claim, use deterministic barriers.
 - **Shared symbols, helpers, config, imports, or exports:** inspect callers, consumers, registration targets, duplicate application, effects at import time, and the branches you must preserve.
 - **Runtime path:** find the smallest representative proxy, pool, startup, Compose, global registration, or built-entrypoint path. A parser, a mock, or a direct database check alone does not prove that boundary.
-- **Runtime helpers with destructive or cross-target effects:** verify the worktree and runtime roots, where the environment came from, container and network identity, prerequisites, and exact arguments. Before an authorized live action, prefer a render, a dry run, or a fake.
+- **Runtime helpers with destructive or cross-target effects:** verify the repository and runtime roots, where the environment came from, container and network identity, prerequisites, and exact arguments. Before an authorized live action, prefer a render, a dry run, or a fake.
 
 ## Lessons from confirmed reviews
 

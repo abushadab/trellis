@@ -1,6 +1,6 @@
 # Git Policy
 
-Before the first Git action that changes anything for a workitem, read `{{path:guidance:ben}}/git-and-github-workflow.md` completely. It holds the Git authority rules and branch lifecycle. Read it again before any remote operation. If you cannot read it, stop before changing anything and report it in your final message with `Status: blocked`.
+Before the first Git action that changes anything for a workitem, read `{{path:guidance:ben}}/git-and-github-workflow.md` completely. It holds the Git authority rules and branch lifecycle. If you cannot read it, stop before changing anything and report it in your final message with `Status: blocked`.
 
 Create or reuse `{{config:git.branch_prefix}}<workitem-id>` for the workitem. Before each slice that changes code, create `{{config:git.work_branch_prefix}}<workitem-id>` from that user-facing branch. After every squash, delete `{{config:git.work_branch_prefix}}<workitem-id>` and recreate it.
 

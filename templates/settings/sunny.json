@@ -1,0 +1,61 @@
+{
+  "subagentPromptCacheTtl": "1h",
+  "disableBundledSkills": true,
+  "skillOverrides": {},
+  "enableAllProjectMcpServers": true,
+  "permissions": {
+    "additionalDirectories": [
+      "{{path:project_dir}}",
+      "{{path:repo_root}}"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(git * push:*)",
+      "Bash(git pull:*)",
+      "Bash(git * pull:*)",
+      "Bash(git fetch:*)",
+      "Bash(git * fetch:*)",
+      "Bash(gh:*)"
+    ],
+    "deny": [
+      "Artifact",
+      "ArtifactComments",
+      "ArtifactData",
+      "DesignSync",
+      "EnterWorktree",
+      "ExitWorktree",
+      "NotebookEdit",
+      "RemoteTrigger",
+      "ReportFindings",
+      "mcp__claude_ai_Claude_Docs",
+      "Bash(git stash:*)",
+      "Bash(git * stash:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git * reset --hard:*)",
+      "Bash(git clean:*)",
+      "Bash(git * clean:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git push --force-with-lease:*)",
+      "Bash(git remote add:*)",
+      "Bash(git * remote add:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git * remote set-url:*)",
+      "Bash(git remote remove:*)",
+      "Bash(git * remote remove:*)",
+      "Bash(git remote rename:*)",
+      "Bash(git * remote rename:*)",
+      "Bash(git remote set-head:*)",
+      "Bash(git * remote set-head:*)",
+      "Agent(Plan)",
+      "Agent(general-purpose)",
+      "Agent(claude-code-guide)",
+      "Agent(statusline-setup)",
+      "Agent(claude)"
+    ]
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  }
+}

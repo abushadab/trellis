@@ -6,7 +6,7 @@
 
 ### Launch
 
-The launch contains `workitem_id`, the planning task's `Task ID` and `Task Name`, and may say what to focus on. For a lane workitem, it also carries `Workitem root: <path>`. Use it as `REPO_ROOT` for Git and files, and do not use Serena. Follow `{{path:guidance:ben}}/lanes-shared-rules.md`. Review authority comes from the target plan and its linked files, not from the launch text.
+The launch contains `workitem_id`, the planning task's `Task ID` and `Task Name`, and may say what to focus on. Review authority comes from the target plan and its linked files, not from the launch text.
 
 ### Review target
 

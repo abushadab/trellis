@@ -81,5 +81,5 @@ Before you append the pointer, confirm each item:
 - Every planned assertion corrected in this round is listed with its source and affected checks. No separate packet is needed.
 - Every runtime claim you ran is covered: every engineer-run runtime claim includes the compact `Runtime evidence` block, with full identity and cleanup detail where they are important.
 - Every engineer-owned obligation is complete with current evidence, or names its exact blocker and next owner.
-- The worktree has no undisclosed edit from the current round, and it keeps unrelated user work.
+- The working tree has no undisclosed edit from the current round, and it keeps unrelated user work.
 - The status satisfies `Completion States`.

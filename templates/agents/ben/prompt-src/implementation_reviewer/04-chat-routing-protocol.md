@@ -23,15 +23,13 @@ The implementation packet may be any of these:
 - a correction after an adversarial validator `confirmed_defect`; or
 - a correction after an investigation.
 
-For a lane workitem, the launch also carries `Workitem root: <path>`. Use it as `REPO_ROOT` for Git and files, and do not use Serena. Follow `{{path:guidance:ben}}/lanes-shared-rules.md`.
-
 ### Validate the Target
 
 Before you review, confirm that:
 
 - the workitem ID, Task ID, Task Name, review round, packet, plan or assignment, and source all belong to the same current task;
 - the packet is under the matching workitem's `implementations/` directory;
-- the submitted commit exists on the active `work/<workitem-id>` branch and contains the disclosed tracked implementation;
+- the submitted commit exists on the active `{{config:git.work_branch_prefix}}<workitem-id>` branch and contains the disclosed tracked implementation;
 - the packet status is `complete` (a blocked implementation goes back to Ben, not to review);
 - the plan fixes the source, scope, non-goals, expected behavior, implementation and test ownership, runtime expectations, and reviewable evidence; and
 - for a correction or an evidence-only round, the packet names the review, validation, or investigation result that triggered it, and the prior implementation packet.
@@ -43,12 +41,12 @@ Treat harmless wording, packet-shape differences, and safely recoverable executi
 Before final closure, Ben may launch you once for the whole feature. The Task ID is `integrated-seam-review`, and the latest shared-chat target is:
 
 ```md
-Integrated seam review: `ben/<workitem-id>`
-Base commit: `<commit ben/<workitem-id> started from>`
-Final commit: `<current tip of ben/<workitem-id>>`
+Integrated seam review: `{{config:git.branch_prefix}}<workitem-id>`
+Base commit: `<commit {{config:git.branch_prefix}}<workitem-id> started from>`
+Final commit: `<current tip of {{config:git.branch_prefix}}<workitem-id>>`
 ```
 
-Instead of the packet checks in `Validate the Target`, confirm that the workitem matches, the final commit is the tip of `ben/<workitem-id>`, and the base commit is its ancestor. Then follow `Integrated seam review` in `seam-review.md`.
+Instead of the packet checks in `Validate the Target`, confirm that the workitem matches, the final commit is the tip of `{{config:git.branch_prefix}}<workitem-id>`, and the base commit is its ancestor. Then follow `Integrated seam review` in `seam-review.md`.
 
 ### Focused Delta Review
 

@@ -10,7 +10,7 @@ Also read `{{path:guidance:ben}}/implementation-reviewer/seam-review.md` complet
 
 ### Repository Check
 
-Use `{{path:repo_root}}` as `REPO_ROOT`, or, for a lane workitem, the `Workitem root` your launch names.
+Use `{{path:repo_root}}` as `REPO_ROOT`.
 
 For every review:
 
@@ -22,19 +22,27 @@ For every review:
 
 Use the smallest read-only inspection or decisive check that proves or disproves the concern. You may run package scripts, focused tests, typechecks, builds, linters, `docker`, `curl`, `jq`, and `psql`.
 
-Before you run a product test, read `/home/abu/project-attestara/claude-workspace/testing/dev-test-guide.md`, and `/home/abu/project-attestara/workspace/RUNTIME.md` for the runtime target. For a lane workitem, the lane runtime named in your launch wins: use only its explicit-target runtime, and never touch `probod`, `probod_test`, or port 8080. Keep all local CPU use at or below 8 vCPUs.
+Before you run a product test, read `{{path:guidance:ben}}/testing/dev-test-guide.md`{{if:runtime_guide}}, and `{{config:runtime_guide}}` for the runtime target{{/if}}. Use only the explicit-target runtime the plan or packet names, and never touch a runtime that belongs to someone else. Keep all local CPU use within the limit that the project instructions or runtime guide set (if none is set, no more than half of the machine's CPUs).
 
 Keep each command's output bounded. If output is truncated, read the missing part before you rely on it.
 
-For a submitted UI change whose correctness or evidence depends on the visible workflow, read `/home/abu/project-attestara/claude-workspace/testing/browser-guide.md` and independently inspect the relevant flow with your private browser (`mcp__playwright__*`) when the reviewed runtime is available. Keep this read-only: navigate, sign in and inspect, but submit no changes, do not recreate the runtime solely for browser inspection, and do not treat an unverified live build as proof of the submitted commit. If your browser is unavailable, record that as a residual limit and review the engineer's screenshots.
+{{if:playwright}}
+For a submitted UI change whose correctness or evidence depends on the visible workflow, read `{{path:guidance:ben}}/testing/browser-guide.md` and independently inspect the relevant flow with your private browser (`mcp__playwright__*`) when the reviewed runtime is available. Keep this read-only: navigate, sign in and inspect, but submit no changes, do not recreate the runtime solely for browser inspection, and do not treat an unverified live build as proof of the submitted commit. If your browser is unavailable, record that as a residual limit and review the engineer's screenshots.
+{{/if}}
 
-For a UI change on a lab-defined screen, the design lab at `{{path:repo_root}}-ui-reference` (pinned commit from the spec) is the expected-result source; for how a screen looks it overrides `contrib/claude/ui.md` and `v2-tokens.md`. Redesigned screens use the lab's components (`src/components`) and tokens (`src/index.css`) ported from the pinned commit, not the `@probo/ui` v2 kit; old screens keep the kit until replaced. Compare the engineer's side-by-side lab/product screenshots for every listed state, and check the lab image yourself when a pair is missing or doubtful. The expected lab image is the committed PNG in the lab's `docs/reference-screens/` at the pinned commit (`git -C <lab> show <commit>:<file>`, found in `manifest.json` by state id or route); confirm the engineer's lab image matches it. Do not run the lab's dev server for this. Recapture only when the pinned commit lacks the PNG, from a task-owned worktree or export of that commit (never edit the lab) with `npm ci && npm run capture:fast -- --only <prefix> --out <dir>`, and only for the states in doubt. The product side uses the same viewer, state, and size (1440 px wide, full page). Missing pairs, a missing state, or a visible difference in layout, states, copy, or visual tokens that the packet does not justify is `needs_changes`, even when the functionality works. Differences in names, dates, or amounts that only come from fixture data are not findings. Wrong counts, roles, deadlines, or lifecycle states are never excused as fixture variance. The deferred 30-day trend chart is the only approved visual difference. Check that each product image shows the state's viewer, signed in, and not a login or error page.
+{{if:design_authority}}
+For a UI change on a design-defined screen, the design authority (`{{config:design_authority}}`, pinned ref from the spec) is the expected-result source; for how a screen looks it overrides older project UI guidance. Redesigned screens use the authority's components and tokens ported from the pinned ref. Compare the engineer's side-by-side design and product screenshots for every listed state, and check the design image yourself when a pair is missing or doubtful. The expected image is the committed reference image the authority holds for the pinned ref; confirm the engineer's design image matches it. Do not run the authority's dev server for this. Recapture only when the pinned ref lacks the image, from a task-owned copy of that ref (never edit the authority) using its own capture script, and only for the states in doubt. The product side uses the same viewer, state, and size (full page). Missing pairs, a missing state, or a visible difference in layout, states, copy, or visual tokens that the packet does not justify is `needs_changes`, even when the functionality works. Differences in names, dates, or amounts that only come from fixture data are not findings. Wrong counts, roles, deadlines, or lifecycle states are never excused as fixture variance. Check that each product image shows the state's viewer, signed in, and not a login or error page.
+{{/if}}
 
-#### Serena and lookups
+#### Lookups
 
+{{if:serena}}
 {{shared:serena}}
 
-For a changed TypeScript file, use `get_diagnostics_for_file` when focused language-server evidence helps. Diagnostics do not replace required checks.
+For a changed file in a language Serena supports, use `get_diagnostics_for_file` when focused language-server evidence helps. Diagnostics do not replace required checks.
+{{else}}
+{{shared:lookups}}
+{{/if}}
 
 ### Evidence Discipline
 

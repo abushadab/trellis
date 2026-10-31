@@ -37,9 +37,9 @@ Apply only the checks that fit the changed risk. Do not ask for a broad test mat
 
 ## Runtime and Source Freshness
 
-Read `/home/abu/project-attestara/claude-workspace/testing/dev-test-guide.md` when you review permanent live-shell work or runtime preparation.
+Read `{{path:guidance:ben}}/testing/dev-test-guide.md` when you review permanent live-shell work or runtime preparation.
 
-- The test targets the intended `local Probo development runtime` stack, project, database, service, role, proxy, pool, startup, Compose, or built entry point.
+- The test targets the intended local development runtime stack, project, database, service, role, proxy, pool, startup, Compose, or built entry point.
 - Runtime preparation covers every changed image input, bundled library, migration, configuration, environment, generated output, Compose file, and affected service.
 - When freshness matters, the recorded image and container identity is useful and consistent.
 - Each result identifies the source and inputs used for that check. For reused evidence, inspect the later diff and confirm it cannot affect the claim or its code, tests, fixtures, dependencies, build settings, or runtime inputs. Require affected rebuilds and reruns when those inputs change. Unrelated edits or a new commit ID alone do not require re-execution.
@@ -49,8 +49,8 @@ Read `/home/abu/project-attestara/claude-workspace/testing/dev-test-guide.md` wh
 For a new or substantially revised permanent shell test, confirm that it:
 
 - has the durable execution trigger or home the plan requires;
-- still runs after the temporary `work/<workitem-id>` branch is squashed and deleted, with no hard-coded equality to that branch;
-- honors explicit runtime targeting (`PROBO_E2E_EXPLICIT_TARGET=1` plus its own database, binary, mail, storage, and listeners), as `contrib/testing/test-evidence-flow.sh` does;
+- still runs after the temporary `{{config:git.work_branch_prefix}}<workitem-id>` branch is squashed and deleted, with no hard-coded equality to that branch;
+- honors explicit runtime targeting (its own database, binary, mail, storage, and listeners), as the project's testing guide describes;
 - uses durable source and runtime identity, or protected-target checks, where freshness or safety needs them;
 - deliberately captures expected non-zero commands; and
 - keeps sensitive values out of printed output that a review may quote.

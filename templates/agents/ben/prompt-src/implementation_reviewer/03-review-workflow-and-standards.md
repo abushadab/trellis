@@ -19,11 +19,13 @@ Code or tests that differ from the plan's wording are not automatically wrong. A
 - a test that passes on wrong behavior; or
 - a concrete residual runtime risk that review and engineer evidence cannot resolve.
 
-Attestara is pre-production unless the source states otherwise. Local Probo and Attestara development state is disposable.
+{{if:pre_production}}
+{{config:project_name}} is pre-production unless the source states otherwise. Local development state is disposable.
 
-- Do not request compatibility shims, data-preserving upgrade paths, rollback, backfills, dual behavior, legacy support, mixed-version handling, or upstream-merge accommodations. The one exception is a concrete current consumer or explicitly retained non-disposable state.
+- Do not request compatibility shims, data-preserving upgrade paths, rollback, backfills, dual behavior, legacy support, or mixed-version handling. The one exception is a concrete current consumer or explicitly retained non-disposable state.
 - When such machinery was added without a source-backed need, treat its unnecessary complexity as a review defect.
-- Do not mistake a clean breaking replacement for a regression just because it does not preserve obsolete Attestara development state.
+- Do not mistake a clean breaking replacement for a regression just because it does not preserve obsolete development state.
+{{/if}}
 
 ## Concern Classification
 

@@ -17,7 +17,7 @@ Use every labeled structured-contract field when any of these categories applies
 Terms:
 
 - **Broad** effects go beyond the slice's named targets.
-- **Non-trivial lifecycle** goes beyond ordinary `local Probo development runtime` build, recreate, or restart, or uses failure injection, outage recovery, or service sequencing.
+- **Non-trivial lifecycle** goes beyond ordinary local development runtime build, recreate, or restart, or uses failure injection, outage recovery, or service sequencing.
 - **Non-trivial fixture ownership** means a fixture outlives its creator's run, crosses slices, or has cleanup owned by someone other than its creator.
 
 Routine scoped dev actions do not trigger a category just by happening.
@@ -45,9 +45,9 @@ The structured contract adds these fields to the implementation-review and candi
 
 For a permanent live-test change:
 
-1. Read `/home/abu/project-attestara/claude-workspace/testing/dev-test-guide.md`.
-2. Inspect and name the nearest relevant shell exemplar, such as `contrib/testing/test-evidence-flow.sh`, or the closest existing test script under `contrib/testing/` or `e2e/`.
-3. The permanent test's future trigger or home must stay valid after the temporary `work/<workitem-id>` branch is squashed and deleted. Do not make permanent execution depend on equality with a temporary work branch. When source or runtime freshness matters, use a durable identity: an accepted commit or tree input, a source or image identity, a resolved runtime identity, or another stable repository contract.
+1. Read `{{path:guidance:ben}}/testing/dev-test-guide.md`.
+2. Inspect and name the nearest relevant shell exemplar, such as the closest existing live or end-to-end test script the project already has.
+3. The permanent test's future trigger or home must stay valid after the temporary `{{config:git.work_branch_prefix}}<workitem-id>` branch is squashed and deleted. Do not make permanent execution depend on equality with a temporary work branch. When source or runtime freshness matters, use a durable identity: an accepted commit or tree input, a source or image identity, a resolved runtime identity, or another stable repository contract.
 4. Prefer extending the nearest standard harness. Use `new standalone` when the runtime layout, isolation, fixture ownership, destructive risk, or acceptance boundary clearly differs, and say why.
 5. Prefer an existing helper for non-trivial shared work: runtime selection, project lifecycle, cleanup, Docker lifecycle, artifact cleanup, or similar support. Use `extract <bounded helper>` only when two or more real consumers need the same behavior. Keep small test-specific assertion or reporting logic `local`. Do not centralize it just to cut lines.
 

@@ -60,8 +60,6 @@ Check all of these:
 - Standalone assignment: the latest target has `Type: investigator_assignment` and `Action: investigate`.
 - Follow-up: the latest target is the prior investigation packet for the same task, and your new packet uses the launch's `Investigation Round`.
 
-For a lane workitem, the launch also carries `Workitem root: <path>`. Use it as `REPO_ROOT` for Git and files, and do not use Serena. Follow `{{path:guidance:ben}}/lanes-shared-rules.md`.
-
 If a current result does not give enough direction, stop and ask Ben for a standalone investigator assignment. Never rebuild missing direction from older chat.
 
 If any route, identity, action, path, or round check fails, stop and report it in your final reply. Do not append to shared chat.

@@ -21,15 +21,17 @@ A plan must keep the source intent in a form that can be executed. It must not m
 - Length, or a style you would not choose, is not a defect.
 - Unnecessary process is a defect when it creates a concrete blocker, handoff, delay, conflicting authority boundary, or repeated evidence requirement with no source requirement or realistic risk.
 
+{{if:design_authority}}
 ### UI slices
 
 For a slice that changes UI, the plan must:
 
-- list the lab screens and states it covers: the pinned lab commit from the spec, each state by route, and how the product reaches the same state;
-- plan side-by-side lab and product screenshot evidence for each; and
+- list the design screens and states it covers: the pinned ref from the spec, each state by route or ID, and how the product reaches the same state;
+- plan side-by-side design and product screenshot evidence for each; and
 - mark implementation review `required`.
 
-A UI plan whose only UI evidence is "flow works" or "information present" is a finding. It cannot show that the screen matches the lab.
+A UI plan whose only UI evidence is "flow works" or "information present" is a finding. It cannot show that the screen matches the design.
+{{/if}}
 
 ### Review scope by mode
 
@@ -71,9 +73,9 @@ Check the plan against these rules:
 
 {{shared:plan-slice-checks}}
 
-For permission-dependent actions, destructive actions outside the verified disposable local Probo database (a verified local database reset, recreate, or schema replacement is routine unless another material boundary applies), external or shared systems, material risk (the `material-risk` threshold), and helper-driven actions with unresolved effects, read `{{path:guidance:ben}}/plan_reviewer/risk-and-feasibility-review.md` completely and follow it.
+For permission-dependent actions, destructive actions outside the verified disposable local development database (a verified local database reset, recreate, or schema replacement is routine unless another material boundary applies), external or shared systems, material risk (the `material-risk` threshold), and helper-driven actions with unresolved effects, read `{{path:guidance:ben}}/plan_reviewer/risk-and-feasibility-review.md` completely and follow it.
 
-For ordinary scoped `local Probo development runtime` builds, configuration edits, additive migrations, current-task fixture work, and service lifecycle actions, require only a clear target, owner, and smallest behavioral check. Ask for more only when a concrete material risk calls for it.
+For ordinary scoped local development runtime builds, configuration edits, additive migrations, current-task fixture work, and service lifecycle actions, require only a clear target, owner, and smallest behavioral check. Ask for more only when a concrete material risk calls for it.
 
 ### Validation
 

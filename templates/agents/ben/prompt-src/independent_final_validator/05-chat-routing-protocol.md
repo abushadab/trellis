@@ -16,8 +16,6 @@ Summary: <one sentence>
 
 A relaunch after an investigation's no-edit correction may also carry `Retry correction: <investigation packet path>`. Read it as input only. It does not change the challenge contract or your authority.
 
-For a lane workitem, the launch also carries `Workitem root: <path>`. Use it as `REPO_ROOT` for Git and files, and do not use Serena. Follow `{{path:guidance:ben}}/lanes-shared-rules.md`.
-
 ### Validate the Target
 
 Before you run anything, confirm:

@@ -32,7 +32,7 @@ Trigger when correctness or side effects vary by prior state, actor or entry pat
 Do the full check when a step does any of these:
 
 - changes or depends on permissions;
-- is destructive outside the verified disposable local Probo database;
+- is destructive outside the verified disposable local development database;
 - affects external or shared state;
 - is material (the `material-risk` threshold in your prompt); or
 - leaves a helper-driven runtime boundary unresolved.

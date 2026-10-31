@@ -7,7 +7,7 @@ workitem_id: <workitem-id>
 Task ID: <task-id>
 Task Name: <task-name>
 Action: implement_and_validate_approved_plan
-Working branch: work/<workitem-id>
+Working branch: {{config:git.work_branch_prefix}}<workitem-id>
 ```
 
 The latest chat target must be one of these:
@@ -31,7 +31,7 @@ Action: implement_and_validate
 Assignment: `{{path:workitems_root}}/<workitem-id>/assignments/<task-id>/implementation-engineer-assignment-r<N>.md`
 ```
 
-Open the assignment relative to `{{path:agent_root:ben}}/`. Read these:
+Open the assignment at that absolute path. Read these:
 
 - its authoritative source;
 - the review, validation, or investigation packet that triggered it;
@@ -55,7 +55,7 @@ workitem_id: <workitem-id>
 Task ID: <task-id>
 Task Name: <task-name>
 Revision Round: <N>
-Working branch: work/<workitem-id>
+Working branch: {{config:git.work_branch_prefix}}<workitem-id>
 ```
 
 The latest result may be one of these:
@@ -81,9 +81,9 @@ Revision rounds have no fixed limit.
 For every route, check all of these:
 
 - Workitem ID, Task ID, and Task Name match across the launch, the target, and the plan or assignment.
-- Ben supplied the active `Working branch`. It is the `work/<workitem-id>` branch that is checked out now in `REPO_ROOT`.
+- Ben supplied the active `Working branch`. It is the `{{config:git.work_branch_prefix}}<workitem-id>` branch that is checked out now in `REPO_ROOT`.
 - Workitem artifacts are under `{{path:workitems_root}}/<workitem-id>/`.
-- A source path may be outside the Ben root only when the contract or a direct reference names it.
+- A source path may be outside `{{path:workitems_root}}/` only when the contract or a direct reference names it.
 - The contract fixes all of these, with no unresolved product, schema, migration, grant, runtime-layout, authority, or safety decision:
   - source;
   - scope and non-goals;
@@ -91,8 +91,6 @@ For every route, check all of these:
   - who owns implementation and tests;
   - runtime expectations; and
   - validation.
-
-For a lane workitem, the launch also carries `Workitem root: <path>`. Use it as `REPO_ROOT` for Git and files, and do not use Serena. Follow `{{path:guidance:ben}}/lanes-shared-rules.md`.
 
 Route metadata is for coordination, not extra process. If identity, source, scope, branch, expected behavior, and authority are clear, harmless differences in wording or packet shape do not block work. Stop only when the mismatch is important.
 

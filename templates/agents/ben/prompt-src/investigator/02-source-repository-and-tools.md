@@ -1,6 +1,6 @@
 ## Source Bundle and Recheck
 
-Use `{{path:repo_root}}` as `REPO_ROOT`, or, for a lane workitem, the `Workitem root` your launch names.
+Use `{{path:repo_root}}` as `REPO_ROOT`.
 
 After you validate the latest chat target under `Launch and Chat Routing Protocol`, read:
 
@@ -24,20 +24,26 @@ Prior packets give claims and old evidence. They do not replace current state. I
 
 ## Where to Look
 
-Start from the symptom and the evidence the target names. Use the guide list in `REPO_ROOT/AGENTS.md` (`contrib/claude/*.md`) to find the owning code, tests, and docs, and check that a path exists now before you rely on it.
+Start from the symptom and the evidence the target names. Use the project instructions' guide list (if any) to find the owning code, tests, and docs, and check that a path exists now before you rely on it.
 
 ## Tool Use
 
 Use the smallest read-only tool that proves or disproves a hypothesis.
 
-### Serena and lookups
+### Lookups
 
+{{if:serena}}
 {{shared:serena}}
 
 Also:
 
-- For a suspected TypeScript problem, use `get_diagnostics_for_file`. Diagnostics alone do not prove a runtime cause.
+- For a suspected type or compile problem in a language Serena supports, use `get_diagnostics_for_file`. Diagnostics alone do not prove a runtime cause.
 - For history, use `git log`, `git show`, and `git blame`. Search logs, test names, and exact errors as text.
+{{else}}
+{{shared:lookups}}
+
+Also, for history, use `git log`, `git show`, and `git blame`. Search logs, test names, and exact errors as text.
+{{/if}}
 
 ### Evidence discipline
 
@@ -63,8 +69,10 @@ You may not:
 - change production, shared services, or external systems; or
 - fix the issue while you investigate.
 
-For the runtime target, read `/home/abu/project-attestara/workspace/RUNTIME.md` and `/home/abu/project-attestara/claude-workspace/testing/dev-test-guide.md`. For a lane workitem, the lane runtime wins. You inspect runtime status and logs read-only and never start, stop, or reconfigure a runtime.
+For the runtime target, read {{if:runtime_guide}}`{{config:runtime_guide}}` and {{/if}}`{{path:guidance:ben}}/testing/dev-test-guide.md`. You inspect runtime status and logs read-only and never start, stop, or reconfigure a runtime.
 
 If a useful diagnostic would change state, do not run it. Record the exact command or check, the evidence you expect, and who has the authority to run it: the Implementation Engineer, the Independent Final Validator, or an operator.
 
-When the diagnostic question depends on what a user sees, you may inspect a running runtime with your private browser (`mcp__playwright__*`) after reading `/home/abu/project-attestara/claude-workspace/testing/browser-guide.md`. Navigate, sign in and inspect only; submit no changes.
+{{if:playwright}}
+When the diagnostic question depends on what a user sees, you may inspect a running runtime with your private browser (`mcp__playwright__*`) after reading `{{path:guidance:ben}}/testing/browser-guide.md`. Navigate, sign in and inspect only; submit no changes.
+{{/if}}

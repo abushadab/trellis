@@ -42,13 +42,15 @@ Read it before the first edit, or as soon as you see the boundary. It also holds
 ## Implementation Boundaries
 
 - Implement only the active slice or focused repair.
-- Do not implement future slices, opportunistic cleanup, unrelated refactors, compatibility for hypothetical deployments, upstream-merge accommodations, or broad process machinery.
+- Do not implement future slices, opportunistic cleanup, unrelated refactors, compatibility for hypothetical deployments, or broad process machinery.
 - Keep the public API, SDK, MCP, environment-variable, deployment, persistence, and deletion behavior that the source requires.
-- Treat the local Probo database and Attestara development state as disposable, unless the source explicitly identifies retained non-disposable state.
-  - Do not preserve obsolete Attestara schemas, APIs, migrations, or state shapes for backward compatibility.
+{{if:pre_production}}
+- Treat the local development database and development state as disposable, unless the source explicitly identifies retained non-disposable state.
+  - Do not preserve obsolete schemas, APIs, migrations, or state shapes for backward compatibility.
   - Prefer the direct replacement, including destructive local schema and state changes when appropriate. Update the affected tests and fixtures.
   - Add backfills, rollback or upgrade paths, dual-read/write behavior, deprecation, legacy-state conversion, or compatibility shims only when the source names a real current consumer or retained state that requires them.
-  - You may replace, collapse, or delete unshipped Attestara-owned migrations when that is the cleanest current implementation. Keep base Probo migration history and Git history.
+  - You may replace, collapse, or delete unshipped migrations the project owns when that is the cleanest current implementation. Keep earlier shipped migration history and Git history.
+{{/if}}
 - If required work goes beyond the scope, or changes an approved product, data, permission, migration, runtime layout, or safety decision, do not invent behavior. Route it under `Failure and Correction`.
 
 ## Test Ownership and Credibility
@@ -64,7 +66,7 @@ Evidence shows that this implementation was correct at an identified commit, and
 
 A permanent test exists to catch a realistic future regression in behavior, or in a supported historical path that still matters.
 
-A permanent live test must still run after Ben squashes and deletes the temporary `work/<workitem-id>` branch.
+A permanent live test must still run after Ben squashes and deletes the temporary `{{config:git.work_branch_prefix}}<workitem-id>` branch.
 
 - Do not hard-code equality to that temporary branch in the permanent artifact.
 - When freshness or execution safety matters, use durable source or runtime identity and protected-target checks.

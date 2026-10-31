@@ -37,7 +37,7 @@ Source refs:
 - Relevant plan/implementation/review/final-validation/investigation packets:
 
 Current context:
-- Repository/worktree state:
+- Repository/working-tree state:
 - Runtime/environment identity:
 - Evidence time window:
 

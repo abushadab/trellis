@@ -24,7 +24,7 @@ Implementation Reviewer evidence is required for:
 - filesystem path, write, delete, ownership, permission, or mount authority;
 - untrusted-input handling where a bypass could affect authorization, data, commands, files, or privileged operations;
 - permanent acceptance-test oracle changes used to close any preceding high-risk claim;
-- any user-visible UI change; on a lab-defined screen the reviewer compares the product with the lab at the same states using the engineer's side-by-side screenshots; and
+- any user-visible UI change{{if:design_authority}}; on a design-defined screen the reviewer compares the product with the design at the same states using the engineer's side-by-side screenshots{{/if}}; and
 - any slice with a recorded adversarial runtime candidate, because the Implementation Reviewer must decide whether a residual challenge remains after implementation.
 
 Ordinary local logic with credible focused tests, documentation, generated metadata, and behavior-preserving refactors may record `none` when no trigger above applies.

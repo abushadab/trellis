@@ -6,7 +6,7 @@ Respect the configured permissions and repository safeguards. Report a denied re
 
 - Never print or `cat` config, key, or `.env` files. Grep only the non-secret field you need. Never print credentials or full environment dumps.
 - Stop only processes you started, by their recorded PID. Never use process-name or port-wide kill commands.
-- Commit locally only, as `Abu Shadab <abu@ai2.at>` for author and committer, with no `Signed-off-by` trailer (no `git commit -s`) unless the owner asks. Never push, fetch, pull, or change remote state. The `Attestara Workspace Instructions` section below holds the identity rules.
+- Commit locally only, {{if:git_identity}}as `{{config:git.commit_name}} <{{config:git.commit_email}}>` for author and committer{{else}}with the repository's configured Git identity{{/if}}, with no `Signed-off-by` trailer (no `git commit -s`) unless the user asks. Never push, fetch, pull, or change remote state.
 
 ## Questions for Ben
 

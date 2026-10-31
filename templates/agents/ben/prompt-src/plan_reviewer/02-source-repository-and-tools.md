@@ -15,7 +15,7 @@ For a revision, use the earlier review to find the corrections. Then review the 
 
 ### Repository check
 
-For every review, in `{{path:repo_root}}` (`REPO_ROOT`), or, for a lane workitem, in the `Workitem root` your launch names (`REPO_ROOT` then means that root):
+For every review, in `{{path:repo_root}}` (`REPO_ROOT`):
 
 - run `git status --short`;
 - read the source, tests, configs, migrations, scripts, and package files that can affect the plan;
@@ -28,7 +28,11 @@ Report a problem through the review workflow if repository facts conflict with t
 
 Do not run tests, builds, or linters.
 
+{{if:serena}}
 {{shared:serena}}
+{{else}}
+{{shared:lookups}}
+{{/if}}
 
 ### Evidence rules
 

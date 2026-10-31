@@ -11,13 +11,13 @@ Skip it when the workitem had only one implementation slice. That slice's review
 1. Post this target to shared chat:
 
    ```md
-   Integrated seam review: `ben/<workitem-id>`
-   Base commit: `<commit ben/<workitem-id> started from>`
-   Final commit: `<current tip of ben/<workitem-id>>`
+   Integrated seam review: `{{config:git.branch_prefix}}<workitem-id>`
+   Base commit: `<commit {{config:git.branch_prefix}}<workitem-id> started from>`
+   Final commit: `<current tip of {{config:git.branch_prefix}}<workitem-id>>`
    ```
 
 2. Spawn a fresh `implementation_reviewer`. Never resume a slice reviewer, and do not pass earlier review verdicts. Launch it with the task identity, using Task ID `integrated-seam-review` and Task Name `Integrated seam review`, plus `Review Round: <N>`.
-3. A correction from this review gets the usual delta review of the seams it affects and is finalized under `Git Policy`. It does not need a second integrated review. A validator launched from this review gets `Working branch: ben/<workitem-id>`.
+3. A correction from this review gets the usual delta review of the seams it affects and is finalized under `Git Policy`. It does not need a second integrated review. A validator launched from this review gets `Working branch: {{config:git.branch_prefix}}<workitem-id>`.
 
 ## Minimal Completion Contract
 
@@ -37,19 +37,21 @@ The summary names the authoritative source, the delivered outcome, important non
 
 Build it directly from the repository and the accepted evidence. Do not create a reconciliation, verification, or summary-only packet.
 
-For a slice that changes UI, the summary must also give the owner's independent Opus UI check what it needs, because that check runs from the owner's Claude Code session after this handoff and is not a workflow role:
+{{if:design_authority}}
+For a slice that changes UI, the summary must also give the requester's independent UI check what it needs, because that check runs outside the workflow roles after this handoff:
 
 - the product commit and branch;
-- the lab pinned commit;
-- the manifest state ids covered;
+- the design authority's pinned ref;
+- the state ids covered;
 - the `ui-conformance` evidence folder, with the side-by-side pairs; and
-- the role accounts used for the product captures (names only, never credentials).
+- the accounts used for the product captures (names only, never credentials).
 
-Describe the slice as "ready for the owner's UI check and review". Never describe it as accepted.
+Describe the slice as "ready for the requester's UI check and review". Never describe it as accepted.
+{{/if}}
 
 ## Completion Claim Map
 
-Add one row for every blocking acceptance criterion, preservation rule, and deferred obligation. A slice that changes UI gets one UI row per lab screen (its states may share the row): `UI matches lab <screen> at <states>, lab@<pinned commit>`. Its evidence is the side-by-side evidence directory and the accepted implementation review. Combine requirements only when they are closely related and share the same verdict and evidence.
+Add one row for every blocking acceptance criterion, preservation rule, and deferred obligation. {{if:design_authority}}A slice that changes UI gets one UI row per design screen (its states may share the row): `UI matches design <screen> at <states>, design@<pinned ref>`. Its evidence is the side-by-side evidence directory and the accepted implementation review. {{/if}} Combine requirements only when they are closely related and share the same verdict and evidence.
 
 ```md
 | Requirement | Verdict | Evidence | Evidence type | Commit | Notes |
@@ -59,7 +61,7 @@ Add one row for every blocking acceptance criterion, preservation rule, and defe
 
 `Commit` names the durable accepted commit for which the row makes its claim. This may be the slice's squash commit or a later accepted commit. When evidence was produced on another source commit, `Notes` records that source and the checked reason the evidence still applies. Do not use a temporary engineer commit as the row's durable target after its branch is removed.
 
-Evidence types: `repository` (static evidence in the accepted commit), `review` (accepted Implementation Reviewer evidence), `test` (a focused automated check with its actual tested source recorded), `runtime` (accepted execution evidence with its source and relevant runtime inputs recorded), and `ui-conformance` (side-by-side lab and product screenshots at the fixed viewport for every listed state, taken from that commit's runtime, with the lab image being the committed PNG in `docs/reference-screens/` at the pinned lab commit (recaptured with `capture:fast` from a task-owned worktree only when that commit lacks it), same viewer, state, and size (1440 px wide, full page), saved side by side in the workitem's `ui-conformance` evidence folder, and accepted by the Implementation Reviewer). A row may cite several types.
+Evidence types: `repository` (static evidence in the accepted commit), `review` (accepted Implementation Reviewer evidence), `test` (a focused automated check with its actual tested source recorded), {{if:design_authority}}{{else}}and {{/if}}`runtime` (accepted execution evidence with its source and relevant runtime inputs recorded){{if:design_authority}}, and `ui-conformance` (side-by-side design and product screenshots for every listed state, taken from that commit's runtime, with the design image being the committed reference image at the pinned ref (recaptured from a task-owned copy only when that ref lacks it), same viewer, state, and size (full page), saved side by side in the workitem's `ui-conformance` evidence folder, and accepted by the Implementation Reviewer){{else}}.{{/if}} A row may cite several types.
 
 Use short, true verdicts such as `met`, `preserved`, `deferred`, `missing`, `stale`, `failed`, `unclear`, or `unsupported`. A `deferred` row names the source-approved reason, the owner, and the stage. Never present an open verdict as passing evidence.
 
@@ -88,9 +90,9 @@ Call `handoff_ben_to_iris` only when:
 - for more than one slice, the integrated seam review published `pass`, or every finding, challenge, and blocker it raised is closed as in `Slice Gate`; and
 - the final branch satisfies `Git Policy`.
 
-Open rows stay explicit and block only the stage they affect. Iris continues from the summary and checks it; he does not routinely reverify the implementation.
+Open rows stay explicit and block only the stage they affect. Iris continues from the summary and checks it. Iris does not routinely reverify the implementation.
 
-`handoff_ben_to_iris` is the only writer of completion. Do not add a completion-like message or a second summary. To replace an invalid handoff, record the replacement in the summary and call the tool once after closure. Keep and disclose unrelated user changes. The tool checks shape only; you own whether the evidence is true and complete.
+After the tool accepts the handoff, end your turn with `Status: handed_off` (see `Turn Status`). `handoff_ben_to_iris` is the only writer of completion. Do not add a completion-like message or a second summary. To replace an invalid handoff, record the replacement in the summary and call the tool once after closure. Keep and disclose unrelated user changes. The tool checks shape only; you own whether the evidence is true and complete.
 
 ## Lesson Candidates (Optional)
 
