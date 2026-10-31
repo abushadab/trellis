@@ -197,7 +197,7 @@ class FixtureRenderTests(unittest.TestCase):
         mcp = json.loads((self.out / ".mcp.json").read_text())
         args = mcp["mcpServers"]["trellis"]["args"]
         self.assertEqual(args[4:], ["trellis", "serve", "--agent", "ben", "--project", str(self.project)])
-        self.assertEqual(args[:2], ["--from", f"{self.plugin}/server"])
+        self.assertEqual(args[:4], ["run", "--quiet", "--project", f"{self.plugin}/server"])
         self.assertEqual(mcp["mcpServers"]["serena"], {"type": "http", "url": "http://127.0.0.1:1/mcp"})
         roles = json.loads((self.out / "roles.json").read_text())
         self.assertEqual(roles, {"general_advisor": "general_advisor"})  # not a default for ben
