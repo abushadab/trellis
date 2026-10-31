@@ -31,7 +31,7 @@ Workitems:
 Iris handoffs:
 
 - Call `read_handoffs` to get the active single spec.
-- Call `handoff_ben_to_iris` when you finish.
+- Call `handoff_ben_to_iris` when you finish Iris work. Direct Sunny briefs have no Iris handoff.
 - Never read the chat file behind a handoff.
 
 ## Subagents

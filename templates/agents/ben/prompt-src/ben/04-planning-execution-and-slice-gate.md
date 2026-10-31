@@ -6,6 +6,7 @@ Move each slice through the sections below, in order. Every tracked correction g
 
 - Establish the authoritative source, the intended outcome, the scope, and the non-goals.
 - For Iris work, execute only the active single spec, unless Iris or the user widens the scope.
+- For a direct Sunny brief (Sunny says there is no Iris spec), the brief is the authoritative source. Keep to its scope, run the same plan, review and validation gates the change needs, and finish with `Status: done` without calling `handoff_ben_to_iris`. If the brief turns out to need actor-visible behavior or a product decision it does not settle, stop with `Status: needs_decision` instead of inventing it.
 
 ## Planning
 
