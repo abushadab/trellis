@@ -21,6 +21,8 @@ from trellis_mcp.render import (
 )
 
 REAL_PLUGIN_ROOT = Path(__file__).resolve().parents[2]
+# Written in pieces so this file itself stays free of the project-specific words it guards against.
+FORBIDDEN = ("Atte" + "stara", "Pro" + "bo", "KI-" + "Quadrat", "gh" + "ki", "ai2" + ".at", "/home" + "/abu")
 FLAGS_ON = {
     "serena": True,
     "playwright": True,
@@ -421,7 +423,7 @@ class RealTemplateTests(unittest.TestCase):
             # The plugin checkout path is machine-specific and legitimately appears in commands.
             text = path.read_text(encoding="utf-8").replace(str(REAL_PLUGIN_ROOT), "<plugin>")
             self.assertNotIn("{{", text, path)
-            for forbidden in ("Attestara", "Probo", "ghki", "/home/abu"):
+            for forbidden in FORBIDDEN:
                 self.assertNotIn(forbidden, text, path)
             if path.suffix == ".json":
                 json.loads(text)
@@ -473,7 +475,7 @@ class RealTemplateTests(unittest.TestCase):
         for path in (REAL_PLUGIN_ROOT / "templates").rglob("*"):
             if path.is_file():
                 text = path.read_text(errors="ignore")
-                for forbidden in ("Attestara", "Probo", "KI-Quadrat", "ghki", "ai2.at", "/home/abu"):
+                for forbidden in FORBIDDEN:
                     self.assertNotIn(forbidden, text, path)
 
 

@@ -38,7 +38,7 @@ class CliTests(unittest.TestCase):
         self.assertEqual((args.command, args.hook_name), ("hook", "register-subagent"))
         self.assertEqual(parser.parse_args(["doctor", "--project", "."]).command, "doctor")
         with self.assertRaises(SystemExit):
-            parser.parse_args(["serve", "--agent", "theo", "--project", "."])
+            parser.parse_args(["serve", "--agent", "nobody", "--project", "."])
 
     def test_render_and_check_exit_codes(self) -> None:
         argv = ["render", "--project", str(self.project), "--plugin-root", str(self.plugin)]

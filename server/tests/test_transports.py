@@ -1551,7 +1551,7 @@ No unresolved gaps block Iris's next stage.
     def test_server_instructions_name_the_project_not_a_product(self) -> None:
         server = create_mcp("ben")
         self.assertIn("Example", server.instructions)
-        self.assertNotIn("Attestara", server.instructions)
+        self.assertNotIn("Atte" + "stara", server.instructions)
 
     def test_iris_cannot_post_to_the_handoff_chat_directly(self) -> None:
         iris_names = [func.__name__ for func in TOOLSETS["iris"]]

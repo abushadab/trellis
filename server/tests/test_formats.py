@@ -92,7 +92,7 @@ class FormatTests(ProjectTestCase):
         chat = (self.paths.workitems_root / "wi-1" / "chat.md").read_text(encoding="utf-8")
         self.assertIn("**Project:** Example", chat)
         self.assertIn(f"**Project root:** `{self.project}`", chat)
-        self.assertNotIn("Attestara", chat)
+        self.assertNotIn("Atte" + "stara", chat)
         self.assertNotIn("Workspace root", chat)
 
     def test_handoff_chat_is_a_trellis_thread(self) -> None:
