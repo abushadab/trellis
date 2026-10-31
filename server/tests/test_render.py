@@ -449,7 +449,7 @@ class RealTemplateTests(unittest.TestCase):
         settings = json.loads((ben / ".claude/settings.json").read_text())
         command = settings["hooks"]["PostToolUse"][0]["hooks"][0]["command"]
         self.assertIn(f"{REAL_PLUGIN_ROOT}/server", command)
-        self.assertIn(f"--project {project}", command)
+        self.assertIn(f'--project "{project}"', command)
 
     def test_all_flags_off(self) -> None:
         project = self.render(self.OFF, docs=False)

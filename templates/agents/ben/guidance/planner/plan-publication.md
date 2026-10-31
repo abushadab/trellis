@@ -163,7 +163,7 @@ Before you {{if:commit_specs}}commit{{else}}publish{{/if}}, confirm:
 Commit only after the final check passes. Use one short, stable `<short-scope>` slug for every revision of the plan. Your working directory resets between Bash calls, so run every Git command as `git -C {{path:project_dir}}`. Commit only the exact assigned plan file. Plan paths are tracked project artifacts, so add only the validated path:
 
 ```bash
-P={{path:project_dir}}
+P="{{path:project_dir}}"
 git -C "$P" add -- <plan-file>
 git -C "$P" -c user.name="Planner (<short-scope>)" \
     {{if:git_identity}}-c user.email="{{config:git.commit_email}}" {{/if}}commit --only -m "Plan r<round>: <task-id> <mode>" -- <plan-file>

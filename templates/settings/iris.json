@@ -69,7 +69,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "{{path:trellis_cmd}} hook register-subagent --agent iris --project {{path:project_dir}}"
+            "command": "{{path:trellis_cmd}} hook register-subagent --agent iris --project \"{{path:project_dir}}\""
           }
         ]
       }

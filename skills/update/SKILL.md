@@ -9,19 +9,25 @@ disable-model-invocation: true
 Re-render the Trellis agent folders for this project. Run it after the plugin is updated or after
 `.trellis/config.yml` is edited. The plugin lives at `${CLAUDE_PLUGIN_ROOT}`.
 
-1. Find the project directory with `git rev-parse --show-toplevel`. If `.trellis/config.yml` is missing
-   there, stop and tell the user to run `/trellis:init`.
+1. Find the project directory and keep it for every command below. The session may be running in
+   `.trellis/agents/sunny`, so never use `$PWD` directly:
+
+   ```bash
+   PROJECT="$(git rev-parse --show-toplevel)"
+   ```
+
+   If `$PROJECT/.trellis/config.yml` is missing, stop and tell the user to run `/trellis:init`.
 2. Preview what would change (writes nothing; exit 1 means some output is stale):
 
    ```bash
-   uv run --quiet --project "${CLAUDE_PLUGIN_ROOT}/server" trellis render --project "$PWD" --plugin-root "${CLAUDE_PLUGIN_ROOT}" --check
+   uv run --quiet --project "${CLAUDE_PLUGIN_ROOT}/server" trellis render --project "$PROJECT" --plugin-root "${CLAUDE_PLUGIN_ROOT}" --check
    ```
 
    If nothing is stale, say so and still run the health check in step 4.
 3. Render:
 
    ```bash
-   uv run --quiet --project "${CLAUDE_PLUGIN_ROOT}/server" trellis render --project "$PWD" --plugin-root "${CLAUDE_PLUGIN_ROOT}"
+   uv run --quiet --project "${CLAUDE_PLUGIN_ROOT}/server" trellis render --project "$PROJECT" --plugin-root "${CLAUDE_PLUGIN_ROOT}"
    ```
 
    Exit 2 is a render error. Show the message and help fix the config. Do not hand-edit rendered files:
@@ -29,7 +35,7 @@ Re-render the Trellis agent folders for this project. Run it after the plugin is
 4. Check:
 
    ```bash
-   uv run --quiet --project "${CLAUDE_PLUGIN_ROOT}/server" trellis doctor --project "$PWD"
+   uv run --quiet --project "${CLAUDE_PLUGIN_ROOT}/server" trellis doctor --project "$PROJECT"
    ```
 
 5. Report the result in a few lines. A running Sunny session keeps the old prompts until it is restarted

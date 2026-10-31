@@ -387,7 +387,7 @@ def discover_targets(
             raise RenderError(f"Role `{role.name}`: missing frontmatter {fm_file}")
         if not parts_dir.is_dir():
             raise RenderError(f"Role `{role.name}`: missing parts directory {parts_dir}")
-        text = render_text(fm_file.read_text(encoding="utf-8"), ctx, str(fm_file)).strip()
+        text = render_text(fm_file.read_text(encoding="utf-8"), ctx.with_escape(_json_escape), str(fm_file)).strip()
         name = agent_name_from_frontmatter(text, fm_file)
         if name != role.name:
             raise RenderError(f"{fm_file} declares `name: {name}` but the manifest role is `{role.name}`")

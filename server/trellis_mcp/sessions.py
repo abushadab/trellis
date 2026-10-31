@@ -213,6 +213,7 @@ class SessionStore:
             "log_file": record["log_path"],
             "created": record["created"],
             "updated": record.get("updated"),
+            "resume_after": record.get("resume_after") if record["status"] == PAUSED else None,
         }
 
     # operations

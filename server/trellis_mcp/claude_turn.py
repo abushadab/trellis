@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import zlib
 import re
 import signal
 import subprocess
@@ -151,12 +152,25 @@ def summarize_stream(path: Path | None, expected_session_id: str | None = None) 
 
 
 def process_start_ticks(pid: int) -> int | None:
+    """A stable identity for the process's start: /proc start ticks on Linux, `ps` start time elsewhere."""
     try:
         stat = Path(f"/proc/{pid}/stat").read_text(encoding="utf-8")
         fields = stat.rsplit(")", 1)[1].strip().split()
         return int(fields[19])
     except (FileNotFoundError, IndexError, OSError, ValueError):
+        if Path("/proc").is_dir():
+            return None
+    # No /proc (macOS): the process start time from ps identifies this exact process.
+    try:
+        result = subprocess.run(
+            ["ps", "-o", "lstart=", "-p", str(pid)], capture_output=True, text=True, timeout=10
+        )
+    except (OSError, subprocess.SubprocessError):
         return None
+    started = result.stdout.strip()
+    if result.returncode != 0 or not started:
+        return None
+    return zlib.crc32(started.encode("utf-8"))
 
 
 def process_matches(pid: int | None, start_ticks: int | None = None) -> bool:
@@ -164,16 +178,7 @@ def process_matches(pid: int | None, start_ticks: int | None = None) -> bool:
         return False
     current_ticks = process_start_ticks(pid)
     if current_ticks is None:
-        if Path("/proc").is_dir():
-            return False
-        # No /proc (macOS): fall back to a plain liveness probe.
-        try:
-            os.kill(pid, 0)
-        except ProcessLookupError:
-            return False
-        except PermissionError:
-            return True
-        return True
+        return False
     return start_ticks is None or current_ticks == start_ticks
 
 

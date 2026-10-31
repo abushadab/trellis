@@ -22,7 +22,7 @@ When your own session starts, call `list_sessions`. Tell the user about unfinish
 After a start or resume, run this with Bash in the background (`run_in_background`):
 
 ```text
-{{path:trellis_cmd}} wait --project {{path:project_dir}} --session <session_id>
+{{path:trellis_cmd}} wait --project "{{path:project_dir}}" --session <session_id>
 ```
 
 It exits when that session finishes its turn, and the harness wakes you. Never wait with a sleep loop or repeated `list_sessions` calls. You may keep talking with the user meanwhile. When it wakes you, call `read_session_result`.
