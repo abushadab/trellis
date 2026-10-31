@@ -6,7 +6,8 @@ Call `read_session_result` and act on the `Status`. Before you act or report, ch
 | --- | --- | --- |
 | `handed_off` | Iris | Open the single spec and check it says `ready_for_ben`. Start Ben with the spec path. Tell the user in one line. |
 | `done` | Iris | Report the spec. If the completion boundary has Ben next, start Ben. Otherwise stop. |
-| `done` | Ben | Report the result. Route back to Iris for the next slice only when the user's goal covers it. Otherwise stop. |
+| `handed_off` | Ben | Spec work finished: Ben called `handoff_ben_to_iris`. Report the result, with the branch and commits. Route back to Iris for the next slice only when the user's goal covers it. Otherwise stop. |
+| `done` | Ben | A direct work item finished. Report the result. Route back to Iris for the next slice only when the user's goal covers it. Otherwise stop. |
 | `needs_decision` | Either | Follow `Decisions`. |
 | `blocked` | Either | Diagnose read-only (below), then route or escalate. |
 | `in_progress` | Either | Resume with a short "continue" message. If it stops the same way twice, treat it as `blocked`. |

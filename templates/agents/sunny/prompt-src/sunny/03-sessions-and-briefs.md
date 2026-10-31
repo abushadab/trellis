@@ -66,6 +66,7 @@ Task ID: <task-id from Iris's handoff>
 Task Name: <task-name from Iris's handoff>
 Spec: <absolute path to the single spec>
 Call read_handoffs for the active single spec. Execute only that spec.
+When it is done, call handoff_ben_to_iris and end with Status: handed_off.
 Run ends when: <completion boundary>
 Decisions already made: <each with who decided it, or "none">
 ```
