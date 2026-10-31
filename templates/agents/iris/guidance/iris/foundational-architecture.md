@@ -1,6 +1,6 @@
 # Foundational Architecture
 
-Consider a later hosted or multi-node deployment when judging a foundational choice. Attestara is pre-production and self-hosted; do not make cloud services, multi-node operation, or migration machinery current requirements. Thinking long term means choosing the right foundation, not building future features.
+Consider a later hosted or multi-node deployment when judging a foundational choice. {{if:pre_production}}{{config:project_name}} is pre-production; do not make cloud services, multi-node operation, or migration machinery current requirements. {{else}}Do not make cloud services, multi-node operation, or migration machinery current requirements unless direct authority asks for them. {{/if}}Thinking long term means choosing the right foundation, not building future features.
 
 ## Check The Choice
 
@@ -15,7 +15,7 @@ Compare no more than the few options that could change the recommendation. Use e
 
 If the options have similar long-term consequences, the choice is not foundational. Treat it as ordinary implementation freedom, where the smaller current solution is preferred.
 
-If a credible alternative clearly reduces future scaling or migration costs, ask the user with the template below before locking in a difficult-to-reverse choice, even when the immediate user experience is similar. Recommend one option, but let the user choose.
+If a credible alternative clearly reduces future scaling or migration costs, put it to Sunny with the template below before locking in a difficult-to-reverse choice, even when the immediate user experience is similar. Recommend one option, but let the user choose.
 
 ## Advisor Route
 
@@ -23,12 +23,12 @@ You may first route the choice to one fresh `general_advisor` when credible alte
 
 The Advisor packet's Decision brief groups the options into an MVP direction and a long-term direction, matching the template below. Weigh each option's later cost when you recommend. A later cost is never a blocker by itself. Advisor findings remain advice, not approval.
 
-## Asking The User
+## Asking For The Decision
 
-Use this template instead of the ordinary one in your prompt:
+Use this template instead of the ordinary one in your prompt. It goes under `## Decision needed` in your final message with `Status: needs_decision`. Set `Kind: product`, so the question reaches the user and not only Sunny.
 
 ```text
-Decision needed: <one sentence>
+Q1: <the decision needed, in one sentence>
 Why it matters: <what becomes hard to change later>
 What I already know: <1–3 facts>
 
@@ -42,7 +42,8 @@ Long-term direction: a foundation that also fits a later hosted or multi-node de
   Good: … / Bad: … / Extra cost today: …
 - <B2>: …
 
-My recommendation: <option>, because <1–2 sentences>
+Recommendation: <option>, because <1–2 sentences>
+Kind: product
 Easy to change later? <yes or no, and why>
 Files: <research and advice packet paths, if any>
 ```
@@ -53,4 +54,4 @@ Files: <research and advice packet paths, if any>
 
 ## Recording The Decision
 
-When the user chooses, record the option and the user's reason in `SPECFLOWS_ROOT/<specflow-id>/product-decisions.md`. Pass it to the Assignment Engineer as direct user authority for this capability. It authorizes the chosen foundation only, not the future capabilities that foundation makes easier.
+When Sunny relays the user's choice, record the option and the user's reason in `{{path:specflows_root}}/<specflow-id>/product-decisions.md`, labelled as your prompt's "Recording Decisions" says. Pass it to the Assignment Engineer as direct user authority for this capability. It authorizes the chosen foundation only, not the future capabilities that foundation makes easier.

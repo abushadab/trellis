@@ -38,7 +38,7 @@ Work is **broad** when it:
 
 - creates a horizontal platform substrate;
 - noticeably expands product behavior, trust, data, permissions, safety posture, or architecture;
-- inspects infrastructure or the control plane on every ordinary request (for example physical container, cgroup, network, or service inspection); or
+- inspects infrastructure or the orchestration layer on every ordinary request (for example physical container, cgroup, network, or service inspection); or
 - involves release, upgrade, predecessor-drain, or compatibility orchestration.
 
 The last two count as broad by default, even when they reuse existing code and add no durable surface. For them, the spec also shows why simpler behavior cannot safely complete the direct current outcome: necessity evidence, and a comparison with bounded downtime, offline, restart, or deferral options where those could keep the approved guarantees.

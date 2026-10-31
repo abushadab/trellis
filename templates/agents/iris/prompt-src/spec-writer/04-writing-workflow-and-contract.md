@@ -36,17 +36,13 @@ Write one behavior-ready unit of work that Ben can plan without inventing produc
 5. Apply the scope gate below before you treat any architecture or behavior as current work.
 6. For a `single`, write one criterion for each independently failing observable outcome, with its best practical evidence beside it. For a `master`, give each roadmap slice one observable outcome and a compact boundary and impact. Do not write an acceptance-criteria matrix.
 7. Write any finality guarantee that applies as the Finality Check below says. Do not carry gate bookkeeping or reviewer workflow into acceptance criteria.
-8. Remove any requirement that drifts outside scope, contradicts a non-goal, duplicates another section, prescribes implementation without a behavior or safety reason, polices caller-owned behavior without authority, or validates converged paths exhaustively without a concrete, distinct risk. Lab-defined layout, flows, states, copy, and visual tokens are behavior the actor sees, not implementation. Refer to them by lab screen and state. Do not remove them or restate them in prose.
+8. Remove any requirement that drifts outside scope, contradicts a non-goal, duplicates another section, prescribes implementation without a behavior or safety reason, polices caller-owned behavior without authority, or validates converged paths exhaustively without a concrete, distinct risk. {{if:design_authority}}Layout, flows, states, copy, and visual tokens that the design authority defines are behavior the actor sees, not implementation. Refer to them by design-authority screen and state. Do not remove them or restate them in prose.{{/if}}
 
 ## Scope Gate
 
 Before you mark a spec ready, meet this gate, or use the scope-escalation shape.
 
 {{shared:scope-gate}}
-
-## Slice Gates
-
-{{shared:slice-gates}}
 
 ## Finality Check
 

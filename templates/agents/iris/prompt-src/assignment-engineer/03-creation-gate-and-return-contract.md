@@ -20,7 +20,7 @@ Ordinary internal architecture is not a blocker when the contract can stay imple
 
 ## Creation
 
-{{shared:aw-tools}}
+{{shared:trellis-tools}}
 
 Use the matching Iris MCP assignment creation tool. Keep the requested Task ID and Task Name. For revision rounds, keep the task identity and output target, carry only the changes, and name any obligation you remove or replace.
 

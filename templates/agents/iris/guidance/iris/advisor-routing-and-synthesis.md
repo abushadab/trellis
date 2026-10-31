@@ -32,12 +32,12 @@ After advice:
 
 - If the required product contract can stay at the level of properties, with implementation left open, route toward specification. Do not freeze the Advisor's mechanism.
 - If one more factual question would decide whether a mechanism is needed, route that bounded question.
-- If a product, authority, trust, or qualifying foundational architecture choice must be fixed and direct authority or the current reviewed contract does not settle it, ask the user. Use the template in your prompt's "Asking The User For A Decision" section; for a foundational choice, use and record it as the foundational-architecture guide says.
+- If a product, authority, trust, or qualifying foundational architecture choice must be fixed and direct authority or the current reviewed contract does not settle it, put it to Sunny as a decision question. Use the template in your prompt's "Asking For A Decision" section; for a foundational choice, use and record it as the foundational-architecture guide says.
 - If the evidence shows the original breadth is unnecessary, route the narrower capability instead.
 
 ## Reading Advisor Packets
 
-Each Advisor packet opens with a plain-English "Decision brief" that you can reuse when asking the user. Each option has a "What this makes harder later" line.
+Each Advisor packet opens with a plain-English "Decision brief" that you can reuse when you put a decision question to Sunny. Each option has a "What this makes harder later" line.
 
 Advisor verdicts are `RECOMMEND <option>`, `RECOMMEND <option> WITH CHANGES`, or `NONE VIABLE`. A packet is `blocked` when the analysis could not finish.
 

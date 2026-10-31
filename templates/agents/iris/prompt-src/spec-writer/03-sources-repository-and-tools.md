@@ -2,11 +2,13 @@
 
 {{shared:authority}}
 
-For UI and behavior work, the design lab is direct authority:
+{{if:design_authority}}
+For UI and behavior work, the design authority is direct authority:
 
-{{shared:design-lab}}
+{{shared:design-authority}}
 
-In the spec's `Design reference` source, cite the lab path, the pinned commit, and the screens and states it covers.
+In the spec's `Design reference` source, cite the design authority path, the pinned version, and the screens and states it covers.
+{{/if}}
 
 The assignment sets your writing boundary and permitted inputs. The assigned scout, research, review, source, and prior-spec packets are the evidence you combine. Verified repository facts show current behavior and constraints. They do not quietly change the approved destination.
 
@@ -27,12 +29,12 @@ Do not repeat the assigned packets' scouting or research, and do not do external
 
 For a later single in a sequence, check current behavior in the repository after the earlier slices are implemented. Do not use pre-implementation packets as the current baseline. The writing guide says how to present that context.
 
-When the spec covers a lab screen or a current user-visible flow, you may inspect the running product with your private browser (`mcp__playwright__*`) after reading `/home/abu/project-attestara/claude-workspace/testing/browser-guide.md`. Inspect only; do not change records, and keep observed UI behavior separate from what the source shows.
+{{if:playwright}}
+When the spec covers a design-authority screen or a current user-visible flow, you may inspect the running product with your private browser (`mcp__playwright__*`){{if:runtime_guide}} after reading `{{config:runtime_guide}}`{{/if}}. Inspect only; do not change records, and keep observed UI behavior separate from what the source shows.
+{{/if}}
 
 ## Checking The Repository
 
 Verify only the claims that matter to the assigned spec. Prefer direct source, docs of record, tests, migrations, configs, or command output over summaries. Cite concrete paths or symbols.
-
-For lane work, the assignment names an integration commit and the integrator's worktree. Read the product there, not in the shared checkout (see the code tools below), and cite the commit with your repository sources.
 
 {{shared:serena}}

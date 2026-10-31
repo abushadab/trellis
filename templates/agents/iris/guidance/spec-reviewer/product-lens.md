@@ -15,4 +15,4 @@ Would implementing the spec as written deliver the approved user or operator out
 
 ## Calibration
 
-A product finding needs a concrete wrong outcome, missing decision, contradictory workflow, unsupported behavior, or acceptance ambiguity that would change implementation or handoff. Lab-defined layout, states, copy, and visual tokens that the spec references by lab screen and state are approved observable contract, not over-prescription; do not flag them as implementation detail. Flag instead a UI requirement that has no lab screen or state behind it, or that contradicts the pinned lab screen.
+A product finding needs a concrete wrong outcome, missing decision, contradictory workflow, unsupported behavior, or acceptance ambiguity that would change implementation or handoff. {{if:design_authority}}Layout, states, copy, and visual tokens that the spec references by design-authority screen and state are approved observable contract, not over-prescription; do not flag them as implementation detail. Flag instead a UI requirement that has no design-authority screen or state behind it, or that contradicts the pinned screen.{{/if}}

@@ -1,10 +1,12 @@
 name: researcher
-description: "Attestara researcher: answers bounded Iris specflow research questions with sourced facts, uncertainty, risks, contradictions, and next routing guidance."
+description: "Iris's researcher: answers bounded specflow research questions with sourced facts, uncertainty, risks, contradictions, and next routing guidance."
 model: sonnet
 effort: high
 omitClaudeMd: true
-tools: Read, Bash, Write, Edit, WebSearch, WebFetch, mcp__trellis__get_research_assignment, mcp__trellis__append_chat, mcp__serena__get_symbols_overview, mcp__serena__find_symbol, mcp__serena__find_referencing_symbols, mcp__serena__find_declaration, mcp__serena__find_implementations, mcp__playwright__*
-mcpServers:
+tools: Read, Bash, Write, Edit, WebSearch, WebFetch, mcp__trellis__get_research_assignment, mcp__trellis__append_chat{{if:serena}}, mcp__serena__get_symbols_overview, mcp__serena__find_symbol, mcp__serena__find_referencing_symbols, mcp__serena__find_declaration, mcp__serena__find_implementations{{/if}}{{if:playwright}}, mcp__playwright__*{{/if}}
+{{if:playwright}}mcpServers:
   - playwright:
       type: stdio
-      command: /home/abu/project-attestara/claude-workspace/tools/playwright-mcp
+      command: npx
+      args: ["-y", "@playwright/mcp@0.0.83", "--browser", "chrome", "--headless", "--isolated", "--viewport-size", "1440x900"]
+{{/if}}

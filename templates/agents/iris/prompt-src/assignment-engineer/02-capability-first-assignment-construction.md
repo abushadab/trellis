@@ -14,11 +14,12 @@ Do not start from a mechanism, subsystem, state machine, migration family, recov
 
 From the supplied authority and evidence, state what the actor can already do and which existing owner provides it. If that is not known, it is a gap for Scout, not for you. Prefer existing product paths over hypothetical new infrastructure.
 
-Existing local Attestara schemas, APIs, migrations, development rows, and earlier downstream implementations are not preservation constraints just because they exist.
+{{if:pre_production}}
+Existing local development schemas, APIs, migrations, development rows, and earlier implementations are not preservation constraints just because they exist.
 
-- Do not shape an assignment around future upstream Probo merges. The owner manages upstream synchronization.
-- For unshipped Attestara-owned schema work, replacing or collapsing an existing Attestara migration is a valid simpler option. Do not require an extra compatibility migration only because an earlier development migration exists.
-- Preserve the base Probo migration history and Git history.
+- For unshipped schema work, replacing or collapsing an existing migration is a valid simpler option. Do not require an extra compatibility migration only because an earlier development migration exists.
+- Preserve Git history.
+{{/if}}
 
 ## 3. Gap
 
@@ -75,14 +76,14 @@ Prefer properties over mechanisms. If deleting a sentence would widen what the a
 
   For a foundational comparison, include the simplest credible option and only the realistic alternatives whose long-term scaling, operations, or migration costs could change the decision. Group them into an MVP direction and a long-term direction, with at most two options in each. Keep each option neutral; give the Advisor the question and evidence to evaluate, not a preferred design. Do not add hosted features or decide the architecture in the assignment.
 - **Spec Writer:** capability outcome, direct authority, current grounded baseline, behavioral boundary, preservation constraints, relevant evidence, and acceptance needs. Implementation choices that do not meet the blocker test stay open; do not turn them into questions the Writer must settle. Do not prewrite implementation architecture. Fill the `create_spec_writer_assignment` fields as follows:
-  - `source`: direct authority (path + clause; for lab work, the pinned lab commit, the lab screens and states in scope, and the adopted lab rules and owner rulings), the current reviewed contract pointer if any, and a labelled `Current baseline:` block of verified current facts with pointers.
+  - `source`: direct authority (path + clause{{if:design_authority}}; for design-authority work, the pinned version, the screens and states in scope, and the adopted rules and rulings{{/if}}), the current reviewed contract pointer if any, and a labelled `Current baseline:` block of verified current facts with pointers.
   - `goal`: the actor-visible capability outcome.
   - `scope`: the behavioral boundary, then labelled `Preserve:` (preservation constraints) and `Open questions:` (what the Writer keeps open or must answer).
   - `non_goals`: only non-goals that prevent a plausible misunderstanding.
   - `acceptance`: acceptance needs.
   - `validation`: the smallest evidence that tells the outcomes apart.
   - `inputs`: evidence artifact pointers.
-- **Spec Reviewer:** the exact target; a lens that is exactly one of `general | product | risk | overengineering | design_conformance` (use `general` for the default single-reviewer case); a narrow focus; and only the sources needed to test it. Do not encode the expected verdict.
+- **Spec Reviewer:** the exact target; a lens that is exactly one of {{if:design_authority}}`general | product | risk | overengineering | design_conformance`{{else}}`general | product | risk | overengineering`{{/if}} (use `general` for the default single-reviewer case); a narrow focus; and only the sources needed to test it. Do not encode the expected verdict.
 
 ### Validation
 

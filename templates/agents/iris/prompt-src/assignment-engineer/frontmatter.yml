@@ -1,6 +1,6 @@
 name: assignment-engineer
-description: "Writes the assignment for the route Iris chose: the smallest grounded job the next role needs, created with the aw assignment tools, without designing the product."
+description: "Writes the assignment for the route Iris chose: the smallest grounded job the next role needs, created with the Trellis assignment tools, without designing the product."
 model: opus
 effort: medium
 omitClaudeMd: true
-tools: Read, Bash, mcp__trellis__create_scout_assignment, mcp__trellis__create_research_assignment, mcp__trellis__create_advisor_assignment, mcp__trellis__create_spec_writer_assignment, mcp__trellis__create_spec_reviewer_assignment, mcp__trellis__read_assignment_log, mcp__serena__get_symbols_overview, mcp__serena__find_symbol, mcp__serena__find_referencing_symbols, mcp__serena__find_declaration, mcp__serena__find_implementations
+tools: Read, Bash, mcp__trellis__create_scout_assignment, mcp__trellis__create_research_assignment, mcp__trellis__create_advisor_assignment, mcp__trellis__create_spec_writer_assignment, mcp__trellis__create_spec_reviewer_assignment, mcp__trellis__read_assignment_log{{if:serena}}, mcp__serena__get_symbols_overview, mcp__serena__find_symbol, mcp__serena__find_referencing_symbols, mcp__serena__find_declaration, mcp__serena__find_implementations{{/if}}

@@ -39,7 +39,7 @@ Plain English, for a reader who has not seen the code:
 
 ### Foundational Decision Brief
 
-For a foundational architecture comparison, replace the `Options` bullet with this shape, so Iris can reuse it in the user's foundational template:
+For a foundational architecture comparison, replace the `Options` bullet with this shape, so Iris can reuse it in the foundational decision template:
 
 ```md
 - MVP direction: the simplest thing that works now

@@ -3,4 +3,4 @@ description: "Read-only check of one proposed Advisor or Spec Writer assignment 
 model: opus
 effort: medium
 omitClaudeMd: true
-tools: Read, Bash, mcp__trellis__append_assignment_log, mcp__serena__get_symbols_overview, mcp__serena__find_symbol, mcp__serena__find_referencing_symbols, mcp__serena__find_declaration, mcp__serena__find_implementations
+tools: Read, Bash, mcp__trellis__append_assignment_log{{if:serena}}, mcp__serena__get_symbols_overview, mcp__serena__find_symbol, mcp__serena__find_referencing_symbols, mcp__serena__find_declaration, mcp__serena__find_implementations{{/if}}

@@ -20,7 +20,7 @@ A prompt should read like a clear brief to a capable colleague. Every rule stays
 10. **Use the glossary below** so every role uses the same plain term for the same idea.
 11. **Merge overlaps, keep behavior.** When a rule appears twice inside one role (in two parts, or in a part and its guide), keep it once in the place where the agent needs it first, and point to it from the other place if needed. A final checklist may still name each check briefly. Aim for about the same length as before, not longer. Never merge two rules whose conditions or thresholds differ, even slightly.
 12. **When a long condition repeats, name it once.** Define a short plain term (for example **route-changing**) where it is first used, then reuse the term.
-13. **Keep names other files depend on.** Do not rename a packet or template heading, field label, or section name that another role's prompt, Iris's guides, the `aw` tools, or Ben's prompts refer to. Spec template headings and field labels (`Status`, `Source References`, `Intent`, `Decisions`, `Boundaries`, `Preserve:`, `Acceptance`, `Open Questions`, and the master template's equivalents) stay unchanged because Ben reads specs. Search before renaming any heading.
+13. **Keep names other files depend on.** Do not rename a packet or template heading, field label, or section name that another role's prompt, Iris's guides, the Trellis tools, or Ben's prompts refer to. Spec template headings and field labels (`Status`, `Source References`, `Intent`, `Decisions`, `Boundaries`, `Preserve:`, `Acceptance`, `Open Questions`, and the master template's equivalents) stay unchanged because Ben reads specs. Search before renaming any heading.
 
 14. **Do not restate what Claude Code enforces.** A role's `tools:` list, the settings deny and ask rules, and Claude Code's own tool guidance already apply. Keep a prompt rule only when it adds a condition the harness cannot check, such as which single file a role may write.
 
@@ -40,7 +40,7 @@ Use the plain term on the right. Do not use the old term on the left in prompts 
 | materially broad | broad work (keep the existing triggers that define it) |
 | material | important enough to change the decision (or simply drop the word when it adds nothing) |
 | terrain | the relevant code and systems |
-| lane (meaning a routing lane) | route / task (e.g. "Researcher task"). A parallel-work lane (lane id, lane table, lane handoff, integrator) is an Attestara term: keep it, and see `guidance/theo/lanes.md`. |
+| lane (meaning a routing lane) | route / task (e.g. "Researcher task") |
 | specifiability | whether the spec can be written |
 | closure-feasibility rows | finality checks |
 | blast radius | what the change touches |

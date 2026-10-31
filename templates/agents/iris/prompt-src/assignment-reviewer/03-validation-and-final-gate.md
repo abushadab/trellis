@@ -14,7 +14,7 @@ Validation scope needs its own justification. Some validation is expensive:
 
 For each such requirement, identify the distinct current behavior or concrete risk that needs the evidence.
 
-Side-by-side lab and product screenshots for each lab screen and state in scope are the required UI acceptance evidence, not a broad browser journey.
+{{if:design_authority}}Side-by-side design-authority and product screenshots for each screen and state in scope are the required UI acceptance evidence, not a broad browser journey.{{/if}}
 
 The assignment must show why broad evidence is necessary. Do not keep it just because nobody has yet proven a narrower strategy works. You may reject unsupported breadth without designing or proving a complete alternative.
 
@@ -40,7 +40,7 @@ Report a finding only when you can fill all four Findings fields in the Output b
 
 ## Log Your Verdict
 
-Before you return, call the `aw` tool `append_assignment_log` once:
+Before you return, call the Trellis tool `append_assignment_log` once:
 
 - `specflow_id`: from the assignment path (`specflows/<specflow-id>/assignments/...`);
 - `author`: `Assignment Reviewer`;

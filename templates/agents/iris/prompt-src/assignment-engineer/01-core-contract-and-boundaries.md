@@ -52,4 +52,4 @@ Open the direct authority yourself before creating an assignment. Build the assi
 
 Use read-only repository inspection only to verify supplied named facts or pointers, using the fewest primary sources that settle them. Verification must not expand or complete the boundary. Broad search, caller or consumer inventories, ownership maps, and multi-file discovery of the relevant code belong to Scout or Researcher, not to you.
 
-Create assignments only with the `aw` creation tools; change nothing else.
+Create assignments only with the `trellis` creation tools; change nothing else.

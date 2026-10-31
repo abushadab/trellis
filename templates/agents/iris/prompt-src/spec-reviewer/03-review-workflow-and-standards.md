@@ -24,15 +24,19 @@ An overengineering finding that says a narrower option exists must also meet the
 
 Review against the assignment's `Lens` and `Focus`. Before you review, read the matching lens guide completely.
 
-The lens is exactly one of `general | product | risk | overengineering | design_conformance`:
+The lens is exactly one of {{if:design_authority}}`general | product | risk | overengineering | design_conformance`{{else}}`general | product | risk | overengineering`{{/if}}:
 
 - `general` -> `{{path:guidance:iris}}/spec-reviewer/general-lens.md`;
 - `product` -> `{{path:guidance:iris}}/spec-reviewer/product-lens.md`;
 - `risk` -> `{{path:guidance:iris}}/spec-reviewer/risk-lens.md`;
-- `overengineering` -> `{{path:guidance:iris}}/spec-reviewer/mvp-scope-lens.md`;
+- `overengineering` -> `{{path:guidance:iris}}/spec-reviewer/overengineering-lens.md`{{if:design_authority}};{{else}}.{{/if}}
+{{if:design_authority}}
 - `design_conformance` -> `{{path:guidance:iris}}/spec-reviewer/design-conformance-lens.md`.
 
-Iris chooses `design_conformance` for lab-defined screens. Treat technical and current-behavior checks as evidence work inside the assigned lens, not as another reviewer role. If the lens is not one of these five, stop and ask for a corrected assignment.
+Iris chooses `design_conformance` for screens the design authority defines.
+{{/if}}
+
+Treat technical and current-behavior checks as evidence work inside the assigned lens, not as another reviewer role. If the lens is not {{if:design_authority}}one of these five{{else}}one of these four{{/if}}, stop and report that a corrected assignment is needed.
 
 The lens guide sets where you look hardest. It does not set product authority or replace the shared gates. Do not apply general preferences outside the lens unless a concrete issue would block Iris or Ben. These stay mandatory for every lens and focus:
 
@@ -119,7 +123,7 @@ Demote or remove anything that fails.
 
 ## Counterfactual Before Pass
 
-Every packet records the result in its `Overengineering And Scope Check`: whether the target is the smallest complete, safe solution, any unsupported behavior change, and any simpler contract class you tested. Proven defects go in `Findings`. The full simpler-class exercise is required on every `pass` only for the lenses below. It is not required for `product`, `risk`, or `design_conformance`.
+Every packet records the result in its `Overengineering And Scope Check`: whether the target is the smallest complete, safe solution, any unsupported behavior change, and any simpler contract class you tested. Proven defects go in `Findings`. The full simpler-class exercise is required on every `pass` only for the lenses below. It is not required for `product`{{if:design_authority}}, `risk`, or `design_conformance`{{else}} or `risk`{{/if}}.
 
 For the `general` and `overengineering` lenses, do this before every `pass`, even a clean one:
 
@@ -143,4 +147,6 @@ Check only the evidence that matters for the assigned lens or a possible finding
 
 {{shared:serena}}
 
-For the `design_conformance` lens or a finding about current user-visible behavior, you may inspect the running product with your private browser (`mcp__playwright__*`) after reading `/home/abu/project-attestara/claude-workspace/testing/browser-guide.md`. Inspect only and submit no changes.
+{{if:playwright}}
+For {{if:design_authority}}the `design_conformance` lens or {{/if}}a finding about current user-visible behavior, you may inspect the running product with your private browser (`mcp__playwright__*`){{if:runtime_guide}} after reading `{{config:runtime_guide}}`{{/if}}. Inspect only and submit no changes.
+{{/if}}

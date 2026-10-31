@@ -9,5 +9,7 @@ Write a `Source References` registry. Cite it wherever an important claim depend
 - In a single revision, keep IDs that are still used where practical, add the decisive new evidence, and remove unused sources.
 - In a living-master refresh, rebuild the registry around the current direction and roadmap state. Drop superseded round assignments and reviews. Link completed rows to their accepted spec or verification instead of keeping a revision ledger.
 - Prefer direct assigned or repository sources over summaries.
-- For lab work, register a `Design reference` source: the lab path, the pinned lab commit, and the screens and states it covers, by route. For example: `attestara-ui-reference@<commit> #/requests/req-access-review?step=submitted&as=p-tomas`. Register the lab product rules you use as product authority: `plans/product-rules.md` rule numbers, `plans/evidence-flow-states.md` rows, and decision-sheet ruling IDs. Cite both at the criteria they govern.
+{{if:design_authority}}
+- For design-authority work, register a `Design reference` source: the design authority path, the pinned version, and the screens and states it covers, by route or screen id. Register the design authority's product rules and recorded rulings that you use as product authority, by rule number, row, or ruling ID. Cite both at the criteria they govern.
+{{/if}}
 - Put an ID at the nearest important claim, section, or table row. Do not cite every obvious sentence or write prose crowded with source references.

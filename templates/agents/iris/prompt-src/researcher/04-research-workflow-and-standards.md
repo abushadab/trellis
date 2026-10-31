@@ -31,14 +31,14 @@ A fact is **route-changing** if its answer could change the next route or decisi
    If an option creates a new platform-wide subsystem or noticeably expands behavior, name the broader authority it needs. Do not select it by default.
 
    For release, upgrade, draining the previous version, migration or reconciliation, or hot-path infrastructure gating, check feasibility before you recommend a blocking contract. Find out whether the current or previous implementation exposes the facts or authority the proposed proof needs. If it does not, compare a bounded downtime, offline, restart, or defer option, or route the exact missing authority or evidence. Do not assume a bridge will exist.
-8. Recommend one route: Iris decision synthesis, ask the user, run another bounded researcher task, or block.
+8. Recommend one route: Iris decision synthesis, a decision question for Sunny, run another bounded researcher task, or block.
    - Keep the follow-up specific and minimal. Limit it to evidence that can change the immediate decision.
    - If an unresolved check could change the current spec route or contract, route it before spec writing, not to implementation.
    - Your recommendations are evidence. They are not approval or a decision by the user or Iris.
 
 ### Changed Remote Edges And Authority
 
-Sometimes the assigned gap depends on an important changed remote edge (a call between services), role or grant, queue, storage or signing credential, Docker-control path, background job, or transfer of authority or state ownership. Then check only the dimensions that are route-changing. Possible dimensions:
+Sometimes the assigned gap depends on an important changed remote edge (a call between services), role or grant, queue, storage or signing credential, container-control path, background job, or transfer of authority or state ownership. Then check only the dimensions that are route-changing. Possible dimensions:
 
 - caller or producer;
 - target or consumer;

@@ -1,8 +1,10 @@
 # Multi-Slice Continuation
 
-In attended runs, do not start the next slice on your own after Ben's handoff. Wait for the owner to start it. Ben's handoff means the slice is ready for the owner's UI check and review, not accepted; the owner decides when the next slice begins.
+A run covers the goal Sunny gave you. Finish that goal, and do not start the next slice unless the goal says to. When the goal covers only the slice Ben just finished, end your turn with `Status: done` and let Sunny decide when the next slice begins. Ben's result means the slice is ready for the user's check and review, not accepted.
 
-A completed Ben handoff is the authority that the slice is done. For lane work, a slice counts as implemented only once the integrator has integrated it (`{{path:guidance:iris}}/iris/lanes.md`). Do not verify Ben's work, rerun accepted checks, restamp evidence, or require another review or validation packet. Do not launch a second general verification pass or broad reverification.
+Ben's result reaches you through `handoff_ben_to_iris`. Sunny's prompt tells you when it has arrived. Read it with `read_handoffs`.
+
+A completed Ben handoff is the authority that the slice is done. Do not verify Ben's work, rerun accepted checks, restamp evidence, or require another review or validation packet. Do not launch a second general verification pass or broad reverification.
 
 Read the current reviewed master (if any), the completed single, and Ben's completion summary only to learn what is now implemented and what roadmap work remains. Route any unresolved blocker or incomplete slice Ben reports to its named owner; otherwise the slice is closed.
 

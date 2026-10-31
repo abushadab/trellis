@@ -13,8 +13,12 @@ A master is a shallow living roadmap for genuinely multi-slice work. It is not a
 ## Source References
 
 - [S1] Product authority: `...`
-- [S2] Design reference (lab work): `attestara-ui-reference@<pinned commit>`, screens and states `...`
+{{if:design_authority}}
+- [S2] Design reference (design-authority work): `<design authority path>@<pinned version>`, screens and states `...`
 - [S3] Current evidence: `...`
+{{else}}
+- [S2] Current evidence: `...`
+{{/if}}
 
 ## Direction
 

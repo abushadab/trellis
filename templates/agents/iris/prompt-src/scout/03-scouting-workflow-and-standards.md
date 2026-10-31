@@ -26,7 +26,7 @@ A **new architectural surface** is any new:
 - database, store, or migration;
 - API, RPC, queue, job, webhook, or other path between services;
 - role or grant boundary;
-- storage, signing, decryption, Docker-control, or service credential;
+- storage, signing, decryption, container-control, or service credential;
 - process; or
 - persistent or in-memory state.
 
@@ -54,7 +54,7 @@ Internal networking, shared environment values, inputs derived from state, and t
 
 Also treat these as broad by default, even when they reuse existing components:
 
-- inspecting Docker, cgroups, networks, or services physically on every ordinary request; and
+- inspecting containers, cgroups, networks, or services physically on every ordinary request; and
 - release, upgrade, predecessor-drain, or compatibility orchestration.
 
 Otherwise, treat it as **ordinary work**.

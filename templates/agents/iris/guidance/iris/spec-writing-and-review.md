@@ -14,12 +14,14 @@ You select the route. The Assignment Engineer turns it into the Spec Writer assi
 
 ## Review Set
 
-Use one Spec Reviewer with lens `general` by default. Add a `product`, `risk`, or `overengineering` reviewer only when a product or risk judgment different enough to change the outcome, or real pressure on scope, would improve confidence. These four and `design_conformance` are the only lenses; no other lens name is valid.
+Use one Spec Reviewer with lens `general` by default. Add a `product`, `risk`, or `overengineering` reviewer only when a product or risk judgment different enough to change the outcome, or real pressure on scope, would improve confidence. {{if:design_authority}}These four and `design_conformance` are the only lenses{{else}}These four are the only lenses{{/if}}; no other lens name is valid.
 
-Use `design_conformance` for every spec that delivers or changes a lab-defined screen. It checks that the spec carries the pinned lab commit, every lab screen and state in scope, and the adopted lab rules, without drift. `general` does not replace it for lab-defined screens; use `general` for slices with no lab screen.
+{{if:design_authority}}
+Use `design_conformance` for every spec that delivers or changes a screen the design authority defines. It checks that the spec carries the pinned version, every screen and state in scope, and the adopted rules, without drift. `general` does not replace it for those screens; use `general` for slices with no such screen.
 
 - For a UI-only slice, `design_conformance` may be the single required reviewer, in place of `general`.
 - When the slice also changes behavior or a trust boundary, add a `general` reviewer. Use `product` or `risk` instead when that is the specific judgment you need.
+{{/if}}
 
 Use `overengineering` when any of these holds. Do not add it to every spec by habit.
 
@@ -28,7 +30,7 @@ Use `overengineering` when any of these holds. Do not add it to every spec by ha
 - It spans several independent capability flows.
 - Earlier review or revision has accumulated scope.
 
-Do not request checks the Spec Reviewer already runs. Its Counterfactual Before Pass (the smallest-option check) applies to the `general` and `overengineering` lenses, not to `design_conformance`.
+Do not request checks the Spec Reviewer already runs. Its Counterfactual Before Pass (the smallest-option check) applies to the `general` and `overengineering` lenses{{if:design_authority}}, not to `design_conformance`{{/if}}.
 
 A `master-refresh` that only records a completed Ben slice is not a substantive review event; it follows the shortcut in your prompt's "Assignment Review Preflight" section.
 

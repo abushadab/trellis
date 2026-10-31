@@ -1,6 +1,6 @@
 # General Review Lens
 
-`general` is the default single-reviewer pass. Use it for slices with no lab screen. For lab-defined screens, it does not replace `design_conformance`.
+`general` is the default single-reviewer pass.{{if:design_authority}} Use it for slices with no design-authority screen. For screens the design authority defines, it does not replace `design_conformance`.{{/if}}
 
 ## Primary Question
 
@@ -12,8 +12,10 @@ Product:
 
 - behavior stated clearly enough that Ben need not invent decisions, with actors, observable states, results, and errors where they matter;
 - observable acceptance criteria that tell the intended behavior from other behavior;
-- preservation of known current behavior across the changed surface; and
-- lab-defined layout, states, copy, and tokens that the spec references by lab screen and state are approved observable contract, not over-prescription. Flag a UI requirement that has no lab screen behind it, or that contradicts the pinned lab screen.
+- preservation of known current behavior across the changed surface{{if:design_authority}}; and{{else}}.{{/if}}
+{{if:design_authority}}
+- layout, states, copy, and tokens that the spec references by design-authority screen and state are approved observable contract, not over-prescription. Flag a UI requirement that has no design-authority screen behind it, or that contradicts the pinned screen.
+{{/if}}
 
 Risk, only where the spec touches it:
 
@@ -24,7 +26,7 @@ MVP and scope:
 
 - the narrower option tested, with no premature surfaces that lack necessity evidence;
 - the MVP slice kept separate from the later full-feature goal; and
-- validation sized to what the change touches, not cumulative recertification. Side-by-side lab and product screenshots for lab screen and state acceptance criteria are the required UI evidence, not a costly journey to challenge.
+- validation sized to what the change touches, not cumulative recertification.{{if:design_authority}} Side-by-side design-authority and product screenshots for screen-state acceptance criteria are the required UI evidence, not a costly journey to challenge.{{/if}}
 
 ## Calibration
 

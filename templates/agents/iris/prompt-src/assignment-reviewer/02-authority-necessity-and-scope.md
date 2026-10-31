@@ -16,7 +16,9 @@ For each important requirement, decide which of these it comes from:
 
 An unsupported inference must not become a mandatory downstream requirement.
 
-Approved lab screens and states at the intent's pinned lab commit, the lab's product rules, and owner rulings in the lab's decision sheet are direct current product authority (`PRODUCT.md`, "UI And Product Authority"). Requiring a spec to match them is not pre-solving.
+{{if:design_authority}}
+Approved design-authority screens and states at the intent's pinned version, the design authority's product rules, and the owner rulings recorded there are direct current product authority. Requiring a spec to match them is not pre-solving.
+{{/if}}
 
 A product or architecture choice is settled only when direct authority or a current reviewed contract settles it within its traceable scope, or when it is an unavoidable result of preserving existing behavior. Ordinary implementation freedom may stay open for the downstream role. Do not flag alternatives that keep the same observable behavior, authority, safety boundary, and acceptance; flag only a choice between truly different contracts.
 

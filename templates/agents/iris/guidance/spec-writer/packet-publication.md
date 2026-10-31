@@ -1,6 +1,6 @@
 # Spec Packet Publication
 
-This guide defines the blocked-spec shape, the final check, the Git commit, and the chat post. It points you to the source and template guides for a normal spec.
+This guide defines the blocked-spec shape, the final check, {{if:commit_specs}}the Git commit, {{/if}}and the chat post. It points you to the source and template guides for a normal spec.
 
 ## Publication Rules
 
@@ -66,34 +66,46 @@ For a scope-escalation block, also add:
 
 ## Git Commit
 
-Use one short, stable `<short-scope>` slug for chat authorship and the commit author name. The Git repository is `/home/abu/project-attestara/claude-workspace/`. There is no separate specflows repository. Commit as `Spec Writer (<short-scope>) <abu@ai2.at>`, the Attestara workspace convention, with no `Signed-off-by` trailer.
+{{if:commit_specs}}
+Use one short, stable `<short-scope>` slug for chat authorship. The Git repository is the one that contains `{{path:project_dir}}`. There is no separate specflows repository, and the project's `.trellis/.gitignore` already excludes specs from its ignore rules.
 
-Every spec is under the ignored `specflows/` folder. Stage only the assigned spec file, with `git add -f -- <spec-file>`. Never force-add another path or change ignore rules.
+Stage only the assigned spec file, with `git add -- <spec-file>`. Never stage another path or change ignore rules. In the commands below, `<spec-file>` is the spec path relative to the repository root.
 
-Your working directory resets between Bash calls, so run every Git command as `git -C "$WS"`.
+Your working directory resets between Bash calls, so run every Git command as `git -C "$REPO"`.
 
-Other writers and Ben's planners publish to the same repository at the same time, including parallel lane writers. Run the stage, verify, and commit steps in one shell call under the publication lock, and hold it only for those steps:
+Other writers and Ben's planner publish to the same repository, possibly at the same time. Run the stage, verify, and commit steps in one shell call under the publication lock, and hold it only for those steps. If `flock` is not installed, run the same steps without it.
 
 ```bash
-flock -w 600 /home/abu/project-attestara/claude-workspace/.git/agents-publication.lock bash -c '
+REPO="{{path:project_dir}}"
+flock -w 600 "$(git -C "$REPO" rev-parse --path-format=absolute --git-common-dir)/trellis-publication.lock" bash -c '
 set -e
-WS=/home/abu/project-attestara/claude-workspace
-git -C "$WS" add -f -- <spec-file>
-git -C "$WS" diff --cached --check -- <spec-file>
-test "$(git -C "$WS" diff --cached --name-only)" = "<spec-file>"
-git -C "$WS" -c user.name="Spec Writer (<short-scope>)" -c user.email="abu@ai2.at" commit -m "Spec r<round>: <task-id> <mode>" -- <spec-file>
+REPO="{{path:project_dir}}"
+git -C "$REPO" add -- <spec-file>
+git -C "$REPO" diff --cached --check -- <spec-file>
+test "$(git -C "$REPO" diff --cached --name-only)" = "<spec-file>"
+{{if:git_identity}}git -C "$REPO" -c user.name="{{config:git.commit_name}}" -c user.email="{{config:git.commit_email}}" commit -m "Spec r<round>: <task-id> <mode>" -- <spec-file>{{else}}git -C "$REPO" commit -m "Spec r<round>: <task-id> <mode>" -- <spec-file>{{/if}}
 '
 ```
 
+{{if:git_identity}}
+The identity above is the project's configured commit identity.
+{{else}}
+The commit uses the repository's own Git identity. Do not set or change it.
+{{/if}}
+Add no `Signed-off-by` trailer.
+
 If the wait times out, try again. Never delete the lock file.
 
-The user set up this workflow, so this spec commit is user-authorized. Make it without asking. This does not cover push, pull, fetch, or PRs.
+`commit_specs: true` in the project's Trellis config is the user's authorization for this spec commit. Make it without asking. This does not cover push, pull, fetch, or PRs.
 
 Do not commit other files, push, amend, bypass hooks, or force a failed commit. If staging holds any other path, or the commit fails, report it in your final reply and do not post the chat pointer.
+{{else}}
+Do not commit. Leave the spec file at its assigned path; the user's Trellis config does not authorize spec commits.
+{{/if}}
 
 ## Chat Pointer
 
-After a successful commit, call `append_chat(specflow_id, author, message)` once. Use author `Spec Writer (<short-scope>)` and post exactly:
+{{if:commit_specs}}After a successful commit, {{else}}Once the spec is written, {{/if}}call `append_chat(specflow_id, author, message)` once. Use author `Spec Writer (<short-scope>)` and post exactly:
 
 ```md
 Spec packet: `<actual artifact path>`
@@ -104,7 +116,7 @@ Summary: <one-line summary>
 
 ## Final Check
 
-Before you commit, confirm each applicable item:
+Before you {{if:commit_specs}}commit{{else}}post the chat pointer{{/if}}, confirm each applicable item:
 
 - **Routing:** launch, lookup, and assignment agree; you read every assigned input or named it unavailable; you wrote only the assigned file, over no unexplained changes.
 - **Authority:** every important behavior change traces to a source in Source Authority. Contradictions, assumptions, and open decisions stay visible. The source registry supports every important claim.
@@ -114,4 +126,4 @@ Before you commit, confirm each applicable item:
 - **Status:** the status and output shape are correct, and no blocker is marked ready.
 - **Revisions:** path and task identity are unchanged; only the routed change was made; unaffected content is kept and superseded wording removed.
 
-When every check passes, commit the required file with the required message and identity. Confirm the commit succeeded and holds no unrelated file. Then post the chat pointer once.
+{{if:commit_specs}}When every check passes, commit the required file with the required message and identity. Confirm the commit succeeded and holds no unrelated file. Then post the chat pointer once.{{else}}When every check passes, post the chat pointer once.{{/if}}

@@ -1,6 +1,6 @@
 # Artifacts, Assignment Engineering, And Preflight
 
-{{shared:aw-tools}}
+{{shared:trellis-tools}}
 
 `chat.md` records workflow communication. `assignment-log.md` records assignment provenance.
 

@@ -25,7 +25,7 @@ Review only:
 
 Use read-only inspection. Do not modify files, runtime state, databases, or repository history.
 
-Files the assignment explicitly references may sit outside `/home/abu/project-attestara/claude-workspace` and `/home/abu/project-attestara/attestara`. Read those exact paths when necessary. Do not explore unrelated external files, and do not treat files you happen to find as authority.
+Files the assignment explicitly references may sit outside `{{path:state_dir}}` and `{{config:repo_root}}`. Read those exact paths when necessary. Do not explore unrelated external files, and do not treat files you happen to find as authority.
 
 Return `blocked` only in these two cases:
 
@@ -34,7 +34,7 @@ Return `blocked` only in these two cases:
 
 A product or implementation choice that the assignment deliberately leaves to the downstream agent is not a blocker by itself.
 
-## MVP Context
+## Product Context
 
 {{shared:mvp-context}}
 

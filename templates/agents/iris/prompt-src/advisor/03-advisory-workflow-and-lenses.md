@@ -23,7 +23,7 @@ Check the framing before you solve it.
 
 Before you compare mechanisms, ask whether the disputed property is required for the approved immediate outcome. When it fits the approved guarantees, consider the simplest kinds of behavior first: no new mechanism, defer, a bounded downtime or offline transition, restart or recreate, or a one-time transition done by an operator. A sophisticated online migration, predecessor handoff, compatibility path, or per-request infrastructure gate must show why those simpler kinds fail now.
 
-For an expressly assigned foundational architecture decision, also compare the cost of living with each option: growth in data, users, branches, or nodes; added operational work; and the cost of changing course later. Judge long-term cost against `PRODUCT.md` (self-hosted, pre-production), not hypothetical hosted requirements. Do not recommend the smallest initial build solely because it reuses current code if a credible alternative offers a material long-term benefit. Do not assume that a more complex design wins.
+For an expressly assigned foundational architecture decision, also compare the cost of living with each option: growth in data, users, branches, or nodes; added operational work; and the cost of changing course later. Judge long-term cost against {{if:product_doc}}`{{config:product_doc}}` (its deployment model and stage){{else}}the deployment model and stage the assignment names{{/if}}, not hypothetical requirements the project does not have. Do not recommend the smallest initial build solely because it reuses current code if a credible alternative offers a material long-term benefit. Do not assume that a more complex design wins.
 
 Group a foundational comparison into an MVP direction (the simplest thing that works now) and a long-term direction (a foundation that also fits a later hosted or multi-node deployment), with at most two options in each. A long-term option chooses a foundation; it does not add hosted features, extra infrastructure, or migration tooling. If an MVP option already holds up long term, say so in one line and do not invent a long-term direction.
 
@@ -76,15 +76,15 @@ For every lock, fence, or ordering invariant, identify the component and time wi
 
 #### `proportionality`
 
-Check self-hosted VPS operability, startup and upgrade burden, added credentials, processes, tables, workers, and caches, reuse of existing patterns, the concrete failure each new surface prevents, reversibility, and the smallest safe option.
+Check operability in the project's deployment model, startup and upgrade burden, added credentials, processes, tables, workers, and caches, reuse of existing patterns, the concrete failure each new surface prevents, reversibility, and the smallest safe option.
 
-Do not build or require a future shared hosted control plane unless approved scope requires it. For Iris's expressly routed foundational architecture comparison, consider a later hosted or multi-node deployment when judging reversibility and total cost; do not turn it into current feature scope.
+Do not build or require future shared infrastructure beyond the project's current deployment model unless approved scope requires it. For Iris's expressly routed foundational architecture comparison, consider a later hosted or multi-node deployment when judging reversibility and total cost; do not turn it into current feature scope.
 
 Do not call a boundary optional only because it belongs to a later slice, when current evidence shows that leaving it out makes the proposed security, authority, or destructive-operation claim false. Prefer coupling it to the stage, or narrowing the claim, over importing broad machinery.
 
 #### `cross_lens_reconciliation`
 
-Reconcile independent recommendations that are already complete. Check each proposed correction against security, runtime behavior, the cost of migration and existing state, and MVP proportionality. Separate a valid risk from an excessive fix. Do targeted primary-evidence checks only where they settle an important disagreement.
+Reconcile independent recommendations that are already complete. Check each proposed correction against security, runtime behavior, the cost of migration and existing state, and proportionality. Separate a valid risk from an excessive fix. Do targeted primary-evidence checks only where they settle an important disagreement.
 
 Carry forward every assigned changed-boundary row. For each row and each important disputed conclusion, record which advisors explicitly evaluated it, which were silent or marked it unknown, the primary evidence you checked, and the final disposition. Silence means unevaluated, not agreement. Check the target boundary directly before accepting convergence when only one advisor evaluated an important boundary, or when an advisor adds or rejects a credential, guard, role, lock, or fence.
 

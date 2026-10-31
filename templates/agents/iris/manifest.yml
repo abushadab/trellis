@@ -1,0 +1,59 @@
+# Iris (formerly Theo): the specification orchestrator.
+# Parts directories live under prompt-src/. The main agent's parts dir (prompt-src/iris/)
+# renders to CLAUDE.md; each role below renders to .claude/agents/<name>.md.
+agent: iris
+main: iris
+guidance_dir: guidance
+style_doc: prompt-src/STYLE.md
+
+roles:
+  - name: scout
+    parts: scout
+    frontmatter: scout/frontmatter.yml
+  - name: researcher
+    parts: researcher
+    frontmatter: researcher/frontmatter.yml
+  - name: spec-writer
+    parts: spec-writer
+    frontmatter: spec-writer/frontmatter.yml
+  - name: spec-reviewer
+    parts: spec-reviewer
+    frontmatter: spec-reviewer/frontmatter.yml
+  - name: general_advisor
+    parts: advisor
+    frontmatter: advisor/frontmatter.general_advisor.yml
+  - name: reconciliation_advisor
+    parts: advisor
+    frontmatter: advisor/frontmatter.reconciliation_advisor.yml
+  - name: assignment-engineer
+    parts: assignment-engineer
+    frontmatter: assignment-engineer/frontmatter.yml
+  - name: assignment-reviewer
+    parts: assignment-reviewer
+    frontmatter: assignment-reviewer/frontmatter.yml
+
+# Shared parts (prompt-src/_shared/<name>.md) each parts directory must include
+# exactly once through {{shared:<name>}}. A shared part that sits inside an
+# {{if:...}} block still counts as included.
+required_shared:
+  iris: [authority, trellis-tools, writing, design-authority]
+  assignment-engineer: [authority, trellis-tools, communication, writing, mvp-context]
+  assignment-reviewer: [authority, communication, writing, mvp-context]
+  advisor: [authority, trellis-tools, serena, communication, writing, packet-artifact, assignment-check]
+  researcher: [authority, trellis-tools, serena, communication, writing, packet-artifact, assignment-check, repo-orientation]
+  scout: [authority, trellis-tools, serena, communication, writing, packet-artifact, assignment-check, repo-orientation]
+  spec-reviewer: [authority, trellis-tools, serena, communication, writing, packet-artifact, smallest-option, scope-gate, design-authority]
+  spec-writer: [authority, trellis-tools, serena, communication, writing, packet-artifact, smallest-option, scope-gate, design-authority]
+
+# Pointer sections the renderer appends (DESIGN section 4). Roles not listed get none.
+# The main prompt carries its own product_doc sentence (prompt-src/iris/01-...), so it
+# lists project_instructions only.
+pointers:
+  project_instructions: [iris, scout, researcher, spec-writer, spec-reviewer, general_advisor, reconciliation_advisor, assignment-engineer, assignment-reviewer]
+  product_doc: [spec-writer, spec-reviewer, general_advisor, reconciliation_advisor, assignment-engineer, assignment-reviewer]
+  runtime_guide: []
+
+# Guidance files that only apply when a flag is set; the renderer may skip them otherwise.
+conditional_guidance:
+  - path: guidance/spec-reviewer/design-conformance-lens.md
+    flag: design_authority
