@@ -40,7 +40,6 @@ Use the plain term on the right. Do not use the old term on the left in prompts 
 | materially broad | broad work (keep the existing triggers that define it) |
 | material | important enough to change the decision (or simply drop the word when it adds nothing) |
 | terrain | the relevant code and systems |
-| lane (meaning a routing lane) | route / task (e.g. "Researcher task") |
 | specifiability | whether the spec can be written |
 | closure-feasibility rows | finality checks |
 | blast radius | what the change touches |

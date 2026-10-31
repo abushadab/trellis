@@ -1,4 +1,4 @@
-# Iris (formerly Theo): the specification orchestrator.
+# Iris: the specification orchestrator.
 # Parts directories live under prompt-src/. The main agent's parts dir (prompt-src/iris/)
 # renders to CLAUDE.md; each role below renders to .claude/agents/<name>.md.
 agent: iris
