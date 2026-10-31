@@ -2,6 +2,7 @@
 
 Use the browser only when the assignment involves an observable browser workflow{{if:design_authority}} or a comparison with the design authority (see "Design comparison"){{/if}}. Stay within your role's source, runtime, and mutation authority. Source reads, API probes, and tests still use their normal tools.
 
+{{if:playwright}}
 ## Your browser
 
 Your `mcp__playwright__*` tools drive a private, headless Chrome that starts with your agent and stops when you finish. It has an in-memory profile and its own cookies, so no other agent and not the user's Chrome shares your sign-in. The viewport is 1440 x 900, device scale factor 1.
@@ -13,13 +14,15 @@ Your `mcp__playwright__*` tools drive a private, headless Chrome that starts wit
 
 ## Signing in
 
-Sign in only on the local development runtime that the task and {{if:runtime_guide}}`{{config:runtime_guide}}`{{else}}the project's documentation{{/if}} name.
+Sign in only on the local development runtime that the task, the runtime guide, or the project's documentation name.
 
 - Use only the test accounts the task or the runtime guide names. If a guide names secret names for sign-in, type the secret name exactly as the `text` of `browser_type` or as a `browser_fill_form` value. The browser enters the real value, and tool output shows `<secret>NAME</secret>` instead. Never type a real password, and never put one in a command, log, or report.
 - Confirm the signed-in person on the page before you capture.
 - Never read credential or environment files. If a sign-in fails, report `blocked`; do not guess.
 - Never use these accounts on any other host. On any other host, including production, do not sign in; report that the user must provide access.
 - A live page may be a different build from the reviewed source. Verify runtime identity before you claim an exact implementation was validated. Demo data is not verified evidence.
+
+{{/if}}
 
 {{if:design_authority}}
 ## Design comparison

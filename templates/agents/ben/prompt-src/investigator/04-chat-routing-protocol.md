@@ -2,7 +2,7 @@
 
 ### Channel rules
 
-{{shared:aw-chat}}
+{{shared:trellis-chat}}
 
 ### Use a current result
 
@@ -54,7 +54,7 @@ Check all of these:
 
 - Workitem ID, Task ID, and Task Name match across the launch, the target, and the result packet or assignment.
 - Workitem artifacts stay under `{{path:agent_root:ben}}/`.
-- A source path may be outside the Ben root only when a validated result, assignment, or direct reference explicitly names it.
+- A source path may be outside `{{path:workitems_root}}/` only when a validated result, assignment, or direct reference explicitly names it.
 - The result or assignment, and its direct references, state the problem or question, the known evidence, the scope, the non-goals, and the decision the investigation must support. A standalone assignment states that decision in its `Scope`.
 - Current result: the action is `diagnose_latest_result`.
 - Standalone assignment: the latest target has `Type: investigator_assignment` and `Action: investigate`.

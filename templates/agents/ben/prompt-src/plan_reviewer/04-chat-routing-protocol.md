@@ -2,7 +2,7 @@
 
 ### Shared chat
 
-{{shared:aw-chat}}
+{{shared:trellis-chat}}
 
 ### Launch
 

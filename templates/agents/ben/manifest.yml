@@ -1,0 +1,63 @@
+# Ben: the execution orchestrator.
+# Parts directories live under prompt-src/. The main agent's parts dir (prompt-src/ben/)
+# renders to CLAUDE.md; each role below renders to .claude/agents/<name>.md.
+agent: ben
+main: ben
+guidance_dir: guidance
+style_doc: prompt-src/STYLE.md
+
+roles:
+  - name: planner
+    parts: planner
+    frontmatter: planner/frontmatter.yml
+  - name: plan_reviewer
+    parts: plan_reviewer
+    frontmatter: plan_reviewer/frontmatter.yml
+  - name: implementation_engineer
+    parts: implementation_engineer
+    frontmatter: implementation_engineer/frontmatter.yml
+  - name: implementation_reviewer
+    parts: implementation_reviewer
+    frontmatter: implementation_reviewer/frontmatter.yml
+  - name: independent_final_validator
+    parts: independent_final_validator
+    frontmatter: independent_final_validator/frontmatter.yml
+  - name: investigator
+    parts: investigator
+    frontmatter: investigator/frontmatter.yml
+
+# Shared parts (prompt-src/_shared/<name>.md) each parts directory must include
+# exactly once through {{shared:<name>}}. A shared part that sits inside an
+# {{if:...}} block still counts as included. `serena` and `lookups` are an
+# {{if:serena}} / {{else}} pair, so both are listed and exactly one survives rendering.
+required_shared:
+  ben: [design-authority, material-risk, slice-size, writing]
+  planner: [trellis-chat, communication, design-authority, host-resources, lookups, material-risk, plan-slice-checks, plan-validation-rules, serena, slice-size, writing]
+  plan_reviewer: [trellis-chat, communication, host-resources, lookups, material-risk, plan-slice-checks, plan-validation-rules, serena, slice-size, writing]
+  implementation_engineer: [trellis-chat, communication, design-authority, lookups, serena, writing]
+  implementation_reviewer: [trellis-chat, communication, lookups, material-risk, serena, writing]
+  independent_final_validator: [trellis-chat, communication, lookups, serena, writing]
+  investigator: [trellis-chat, communication, lookups, serena, writing]
+
+# Pointer sections the renderer appends (DESIGN section 4). Roles not listed get none.
+# The main prompt carries its own product_doc block (prompt-src/ben/01-...), so it
+# lists project_instructions only.
+pointers:
+  project_instructions: [ben, planner, plan_reviewer, implementation_engineer, implementation_reviewer, independent_final_validator, investigator]
+  product_doc: []
+  runtime_guide: [ben, implementation_engineer, implementation_reviewer, independent_final_validator, investigator]
+
+# Guides shared across agents. `source` is relative to this manifest's directory; `dest` is
+# relative to the rendered guidance directory, so prompts reach them at
+# {{path:guidance:ben}}/testing/<name>.md. A `flag` skips the file when that flag is off.
+shared_guidance:
+  - source: ../../shared/dev-test-guide.md
+    dest: testing/dev-test-guide.md
+  - source: ../../shared/browser-guide.md
+    dest: testing/browser-guide.md
+
+# Rendered settings template (the renderer fills {{path:...}} and {{config:...}} in it).
+settings: ../../settings/ben.json
+
+# Guidance files that only apply when a flag is set; the renderer may skip them otherwise.
+conditional_guidance: []

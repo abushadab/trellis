@@ -36,7 +36,7 @@ A slice that changes UI also names the design screens and states it covers:
 {{shared:design-authority}}
 - The slice's UI evidence is side-by-side design and product screenshots (same viewport, full page, same viewer and state) as `{{path:guidance:ben}}/testing/browser-guide.md` ("Design comparison") describes. The expected image is the committed reference image the design authority holds for the pinned ref; plan a recapture only for a state the pinned ref lacks, and capture only the states the slice touches.
 - Protected product screens are captured logged in as the state's viewer, using local test accounts that match the design's people. Credentials never go in command arguments, logs, or reports. If the accounts do not exist, the slice's plan starts by creating them.
-- Its implementation-review decision is `required`.
+- A slice that changes UI has the implementation-review decision `required`.
 {{/if}}
 
 ### Slice size
