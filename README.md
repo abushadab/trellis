@@ -118,9 +118,8 @@ Restart Sunny afterward.
 
 ## Known limitations
 
-- The git deny rules are a guardrail against accidental remote or destructive commands, not a sandbox. Unusual spellings, such as an absolute path to `git`, are not matched.
+- The git deny rules are a guardrail against accidental remote or destructive commands, not a sandbox. They cover the common spellings (including `git -C`, global options and an absolute path to `git`), but a determined agent could still find another route.
 - `trellis trust` rewrites `~/.claude.json`. If Claude Code writes that file at the same moment, the concurrent change can be lost. Trust is written once per project, so run `/trellis:init` while no other Claude sessions are busy.
-- Linked git worktrees: trust is recorded for the worktree path, but Claude Code checks the main checkout. Install into the main checkout, or accept the trust dialog once there.
 
 ## Development
 

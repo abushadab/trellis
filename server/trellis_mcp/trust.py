@@ -46,13 +46,32 @@ def git_root(path: Path) -> Path:
     return Path(top).resolve() if result.returncode == 0 and top else path
 
 
+def main_checkout_root(path: Path) -> Path | None:
+    """For a linked worktree, the main checkout's root (Claude Code keys trust on it); else None."""
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(Path(path).resolve()), "rev-parse", "--path-format=absolute", "--git-common-dir"],
+            capture_output=True,
+            text=True,
+            timeout=20,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    common = result.stdout.strip()
+    if result.returncode != 0 or not common:
+        return None
+    common_dir = Path(common).resolve()
+    return common_dir.parent if common_dir.name == ".git" else None
+
+
 def trust_roots(project_dir: Path, repo_root: Path | None = None) -> list[Path]:
-    """The git roots to trust: the project's, plus ``repo_root``'s when it is a different one."""
-    roots = [git_root(project_dir)]
-    if repo_root is not None:
-        other = git_root(repo_root)
-        if other not in roots:
-            roots.append(other)
+    """The git roots to trust: the project's, ``repo_root``'s when different, and for a linked
+    worktree also its main checkout, which is the path Claude Code actually checks."""
+    roots: list[Path] = []
+    for path in [project_dir] + ([repo_root] if repo_root is not None else []):
+        for root in (git_root(path), main_checkout_root(path)):
+            if root is not None and root not in roots:
+                roots.append(root)
     return roots
 
 
