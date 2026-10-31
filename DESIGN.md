@@ -90,7 +90,7 @@ tools:
   serena: false                   # true = Serena MCP at serena_url
   serena_url: null
   playwright: auto                # auto | true | false; auto = enable if npx exists
-mode: standard                    # standard | saver; tables in templates/modes.yml
+mode: saver                       # saver (default) | deep; tables in templates/modes.yml
 models: {}                        # optional per-role overrides, e.g. {implementation_engineer: sonnet}
 efforts: {}                       # optional per-role effort overrides
 sunny:

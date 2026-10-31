@@ -34,9 +34,8 @@ tools:
   serena_url: null                # Serena MCP URL. Needed when serena is true.
   playwright: auto                # auto | true | false. auto = on when npx exists.
 
-mode: standard                    # standard = the proven setup (Opus, high effort on reviews).
-                                  # saver = cost saving: no Opus at high effort, Sonnet where a later
-                                  # Opus check covers the role. The tables are in templates/modes.yml.
+mode: saver                       # saver (default) = cost saving: every Opus role at medium effort.
+                                  # deep = high intelligence: high effort on reviews, validation and advisors. The tables are in templates/modes.yml.
 models: {}                        # Optional per-role model overrides on top of the mode,
                                   # e.g. {implementation_engineer: sonnet, spec-writer: opus}.
 efforts: {}                       # Optional per-role effort overrides (low | medium | high | xhigh | max),

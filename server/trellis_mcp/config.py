@@ -38,7 +38,7 @@ KNOWN_KEYS = {
 }
 
 
-MODES = ("standard", "saver")
+MODES = ("saver", "deep")
 EFFORT_LEVELS = ("low", "medium", "high", "xhigh", "max")
 
 
@@ -82,7 +82,7 @@ class TrellisConfig:
     commit_specs: bool = True
     tools: ToolsConfig = field(default_factory=ToolsConfig)
     models: dict[str, str] = field(default_factory=dict)
-    mode: str = "standard"
+    mode: str = "saver"
     efforts: dict[str, str] = field(default_factory=dict)
     sunny: SunnyConfig = field(default_factory=SunnyConfig)
     claude_projects_root: Path | None = None
@@ -279,8 +279,8 @@ def parse_config(data: Any, project_dir: Path) -> TrellisConfig:
         "models must map role names to model names",
     )
 
-    mode = data.get("mode", "standard")
-    _expect(mode in MODES, "mode must be standard or saver")
+    mode = data.get("mode", "saver")
+    _expect(mode in MODES, "mode must be saver or deep")
     efforts_raw = _mapping(data, "efforts")
     _expect(
         all(isinstance(k, str) and v in EFFORT_LEVELS for k, v in efforts_raw.items()),

@@ -1,7 +1,7 @@
 # Model and effort for every Trellis agent, per mode.
 # `mode` in .trellis/config.yml picks a column; `models:` and `efforts:` override single roles.
-# standard: the proven setup. saver: no Opus high; Sonnet where a later Opus check covers the role.
-standard:
+# saver (default): every Opus role at medium effort. deep: the original setup, with high effort on reviews and advisors.
+deep:
   sunny: {model: opus, effort: medium}
   iris: {model: opus, effort: medium}
   ben: {model: opus, effort: medium}
@@ -22,15 +22,15 @@ standard:
 saver:
   sunny: {model: opus, effort: medium}
   iris: {model: opus, effort: medium}
-  ben: {model: sonnet, effort: high}
+  ben: {model: opus, effort: medium}
   scout: {model: sonnet, effort: medium}
   researcher: {model: sonnet, effort: high}
   assignment-engineer: {model: opus, effort: medium}
-  assignment-reviewer: {model: sonnet, effort: high}
+  assignment-reviewer: {model: opus, effort: medium}
   spec-writer: {model: opus, effort: medium}
   spec-reviewer: {model: opus, effort: medium}
   general_advisor: {model: opus, effort: medium}
-  reconciliation_advisor: {model: sonnet, effort: high}
+  reconciliation_advisor: {model: opus, effort: medium}
   planner: {model: opus, effort: medium}
   plan_reviewer: {model: opus, effort: medium}
   implementation_engineer: {model: sonnet, effort: high}

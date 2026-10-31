@@ -61,8 +61,8 @@ exist, likely docs such as `docs/`, `README.md`, a `Makefile` or `package.json` 
 9. Playwright (default `auto`: on when `npx` exists).
 10. Sunny autonomy (default `technical`: Sunny decides technical and process questions, product, safety and
     data go to the user; or `none`) and the usage threshold (default 75 percent of the 5-hour window).
-11. Mode (default `standard`, the proven setup; or `saver` to cut cost: no Opus at high effort and Sonnet
-    where a later Opus check covers the role). Show the table from the README if the user asks.
+11. Mode (default `saver`: every Opus role runs at medium effort; or `deep` for high intelligence: high
+    effort on reviews, validation and advisors, at more cost). Show the table from the README if the user asks.
 
 Check that every doc path the user gives exists. A missing optional file is skipped by the renderer, but
 warn the user so a typo is caught now.
