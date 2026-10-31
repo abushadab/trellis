@@ -156,12 +156,12 @@ Iris and Ben never push, pull, fetch, open PRs or change remotes; rendered setti
 
 ## 8. Settings defaults (rendered `.claude/settings.json`)
 
-Keep from the source: `subagentPromptCacheTtl: "1h"`, `disableBundledSkills: true`, the irrelevant-tool deny list, built-in `Agent(...)` denies for Iris/Ben (Explore, Plan, general-purpose, claude-code-guide, statusline-setup, claude), git denies (stash, reset --hard, clean, force push, remote add/set-url/remove/rename/set-head), `attribution: {commit: "", pr: ""}`, `enableAllProjectMcpServers: true`, the PostToolUse `Agent` hook → `trellis hook register-subagent`. Iris/Ben additionally deny `git push/pull/fetch` and `gh`. `additionalDirectories`: project dir (and repo_root if different). Drop: `ghki`, `GH_CONFIG_DIR`, `m1-reviewer`, Command Code denies, skill overrides naming claude.ai skills (keep the mechanism, empty by default).
+Defaults: `subagentPromptCacheTtl: "1h"`, `disableBundledSkills: true`, the irrelevant-tool deny list, built-in `Agent(...)` denies for Iris/Ben (Explore, Plan, general-purpose, claude-code-guide, statusline-setup, claude), git denies (stash, reset --hard, clean, force push, remote add/set-url/remove/rename/set-head), `attribution: {commit: "", pr: ""}`, `enableAllProjectMcpServers: true`, the PostToolUse `Agent` hook → `trellis hook register-subagent`. Iris/Ben additionally deny `git push/pull/fetch` and `gh`. `additionalDirectories`: project dir (and repo_root if different). Skill overrides stay as a mechanism, empty by default.
 
 ## 9. Work rules for builders
 
 - Write only inside your assigned directories. Read sources freely.
-- Commit locally in `/home/abu/trellis` with the repo's configured identity, one commit per coherent step, message describing the change. No push, no remotes.
+- Commit locally with the repo's configured identity, one commit per coherent step, message describing the change. No push, no remotes.
 - Do not add a `Co-Authored-By` or `Signed-off-by` trailer.
 - Keep prompts in the existing plain-English style (`STYLE.md` from the source; copy it into templates).
 
