@@ -1,0 +1,6 @@
+name: assignment-reviewer
+description: "Read-only check of one proposed Advisor or Spec Writer assignment before launch; flags scope, mechanisms, or validation that are unnecessary or not backed by direct authority."
+model: opus
+effort: medium
+omitClaudeMd: true
+tools: Read, Bash, mcp__trellis__append_assignment_log, mcp__serena__get_symbols_overview, mcp__serena__find_symbol, mcp__serena__find_referencing_symbols, mcp__serena__find_declaration, mcp__serena__find_implementations

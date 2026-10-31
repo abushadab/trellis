@@ -1,0 +1,1 @@
+Tool names here are tools on the Trellis MCP server, which you see as `mcp__trellis__<name>`. If a required tool is unavailable or fails, stop and report it. Never use direct chat-file access as a fallback.

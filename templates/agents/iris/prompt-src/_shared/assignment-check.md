@@ -1,0 +1,1 @@
+Take the assignment and packet paths only from the lookup. Check that the lookup returned both paths, that the assignment is readable under `{{path:specflows_root}}`, and that its Specflow ID, Task ID, and Task Name match the launch message and the lookup. If not, stop; do not post to chat.

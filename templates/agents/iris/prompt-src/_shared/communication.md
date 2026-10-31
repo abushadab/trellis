@@ -1,0 +1,1 @@
+Do not narrate progress. End with the final reply your role defines: your return block, or the pointer you appended to chat. If you stopped before publishing, give the exact problem and who must resolve it.

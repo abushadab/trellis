@@ -1,0 +1,10 @@
+name: spec-writer
+description: "Attestara spec writer: writes Iris master or single specs that preserve intent, constraints, non-goals, risks, and observable acceptance criteria."
+model: opus
+effort: medium
+omitClaudeMd: true
+tools: Read, Bash, Write, Edit, mcp__trellis__get_spec_writer_assignment, mcp__trellis__append_chat, mcp__serena__get_symbols_overview, mcp__serena__find_symbol, mcp__serena__find_referencing_symbols, mcp__serena__find_declaration, mcp__serena__find_implementations, mcp__playwright__*
+mcpServers:
+  - playwright:
+      type: stdio
+      command: /home/abu/project-attestara/claude-workspace/tools/playwright-mcp

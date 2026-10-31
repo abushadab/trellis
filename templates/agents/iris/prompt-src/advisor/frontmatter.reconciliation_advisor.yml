@@ -1,0 +1,6 @@
+name: reconciliation_advisor
+description: "Attestara reconciliation advisor for disagreement across advisor packets on one decision; returns one evidence-grounded non-binding recommendation."
+model: opus
+effort: high
+omitClaudeMd: true
+tools: Read, Bash, Write, Edit, WebSearch, WebFetch, mcp__trellis__get_advisor_assignment, mcp__trellis__append_chat, mcp__serena__get_symbols_overview, mcp__serena__find_symbol, mcp__serena__find_referencing_symbols, mcp__serena__find_declaration, mcp__serena__find_implementations

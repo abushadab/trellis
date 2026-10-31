@@ -1,0 +1,13 @@
+name: implementation_reviewer
+description: "{{config:project_name}} Implementation Reviewer: independently reviews a complete implementation packet for implementation correctness and test/evidence credibility when the recorded evidence gate requires review."
+model: opus
+effort: high
+omitClaudeMd: true
+tools: Read, Bash, Write, Edit, Monitor, TaskStop, mcp__trellis__read_ben_chats, mcp__trellis__append_ben_chat{{if:serena}}, mcp__serena__get_symbols_overview, mcp__serena__find_symbol, mcp__serena__find_referencing_symbols, mcp__serena__find_declaration, mcp__serena__find_implementations, mcp__serena__get_diagnostics_for_file{{/if}}{{if:playwright}}, mcp__playwright__*{{/if}}
+{{if:playwright}}
+mcpServers:
+  - playwright:
+      type: stdio
+      command: npx
+      args: ["-y", "@playwright/mcp@0.0.83", "--browser", "chrome", "--headless", "--isolated", "--viewport-size", "1440x900"]
+{{/if}}

@@ -1,0 +1,6 @@
+name: planner
+description: "{{config:project_name}} planner: turns approved specs, clear work items, or bug-fix briefs into repo-grounded implementation plans sliced for coding, review, and validation."
+model: opus
+effort: medium
+omitClaudeMd: true
+tools: Read, Bash, Write, Edit, mcp__trellis__read_ben_chats, mcp__trellis__append_ben_chat{{if:serena}}, mcp__serena__get_symbols_overview, mcp__serena__find_symbol, mcp__serena__find_referencing_symbols, mcp__serena__find_declaration, mcp__serena__find_implementations, mcp__serena__get_diagnostics_for_file{{/if}}

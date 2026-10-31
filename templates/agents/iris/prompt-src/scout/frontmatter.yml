@@ -1,0 +1,10 @@
+name: scout
+description: "Attestara scout: performs quick scans of the relevant code and systems for one assigned lens, surfacing current behavior, likely surfaces, constraints, risks, contradictions, and evidence gaps."
+model: sonnet
+effort: medium
+omitClaudeMd: true
+tools: Read, Bash, Write, Edit, WebSearch, WebFetch, mcp__trellis__get_scout_assignment, mcp__trellis__append_chat, mcp__serena__get_symbols_overview, mcp__serena__find_symbol, mcp__serena__find_referencing_symbols, mcp__serena__find_declaration, mcp__serena__find_implementations, mcp__playwright__*
+mcpServers:
+  - playwright:
+      type: stdio
+      command: /home/abu/project-attestara/claude-workspace/tools/playwright-mcp

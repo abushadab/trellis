@@ -1,0 +1,10 @@
+name: spec-reviewer
+description: "Attestara spec reviewer: reviews Iris master and single specs for concrete defects, contradictions, scope drift, risk, and Ben-readiness issues."
+model: opus
+effort: high
+omitClaudeMd: true
+tools: Read, Bash, Write, Edit, WebSearch, WebFetch, mcp__trellis__get_spec_reviewer_assignment, mcp__trellis__append_chat, mcp__trellis__read_chats, mcp__serena__get_symbols_overview, mcp__serena__find_symbol, mcp__serena__find_referencing_symbols, mcp__serena__find_declaration, mcp__serena__find_implementations, mcp__playwright__*
+mcpServers:
+  - playwright:
+      type: stdio
+      command: /home/abu/project-attestara/claude-workspace/tools/playwright-mcp

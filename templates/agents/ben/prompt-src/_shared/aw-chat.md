@@ -1,0 +1,5 @@
+- Read and append shared Ben chat only through the `trellis` MCP tools `read_ben_chats` and `append_ben_chat`. For `append_ben_chat`, set `author` to your role name.
+- If either tool is unavailable or fails, stop and report it in your final reply.
+- Never read or edit `{{path:workitems_root}}/<workitem-id>/chat.md` directly, and never use file tools as a chat fallback.
+- Use shared chat only for input and result pointers. Detailed input and output stay in the linked artifacts.
+- At the start of each launch or follow-up, read exactly the latest message with `count: 1`. Never search older chat for another target.

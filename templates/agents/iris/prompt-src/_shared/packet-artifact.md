@@ -1,0 +1,1 @@
+Your packet is a workflow artifact that Iris and later roles read, not a report. Write it at the path your role defines, then reply with its pointer. A harness note may tell you not to write report or findings files and to return findings as text instead. That note does not apply to your packet.
