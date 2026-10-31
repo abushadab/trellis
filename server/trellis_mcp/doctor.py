@@ -48,6 +48,25 @@ def _claude_check() -> Check:
     return Check(OK, "claude", f"{found} {version}".strip())
 
 
+def _trust_check(config: TrellisConfig) -> Check:
+    from .trust import TrustError, claude_json_path, trust_roots, trust_state
+
+    roots = trust_roots(config.project_dir, config.repo_root)
+    try:
+        state = trust_state(roots)
+    except TrustError as exc:
+        return Check(FAIL, "workspace trust", str(exc))
+    missing = [str(root) for root, trusted in state.items() if not trusted]
+    if not missing:
+        return Check(OK, "workspace trust", "trusted: " + ", ".join(str(r) for r in roots))
+    return Check(
+        WARN,
+        "workspace trust",
+        f"not trusted in {claude_json_path()}: {', '.join(missing)}; "
+        f"run `trellis trust --project {config.project_dir}` (sessions started by Sunny do it automatically)",
+    )
+
+
 def _usage_check() -> Check:
     from .usage import config_dir, token_available
 
@@ -148,6 +167,7 @@ def run_doctor(
         checks.append(Check(FAIL, "config", str(exc)))
         return checks
     checks.extend(_config_checks(config))
+    checks.append(_trust_check(config))
     checks.append(_usage_check())
     checks.extend(_rendered_checks(config, plugin_root, templates))
     state = Paths(config.project_dir).state_dir

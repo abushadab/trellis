@@ -22,6 +22,7 @@ from .chat_io import atomic_write_text
 from .claude_turn import launch_detached, process_alive, process_start_ticks, summarize_stream
 from .paths import Paths
 from .timeutil import now_iso
+from .trust import TrustError, ensure_trusted, explain_failure, trust_roots
 from .workflow_common import file_lock
 
 LAUNCHABLE_AGENTS = ("iris", "ben")
@@ -127,6 +128,7 @@ def parse_decisions(text: str) -> list[dict[str, str]]:
 class SessionStore:
     paths: Paths
     claude_executable: str = "claude"
+    repo_root: Path | None = None
 
     @property
     def root(self) -> Path:
@@ -215,7 +217,15 @@ class SessionStore:
 
     # operations
 
+    def _ensure_trust(self) -> None:
+        """Headless sessions ignore the project's permissions until its git root is trusted."""
+        try:
+            ensure_trusted(trust_roots(self.paths.project_dir, self.repo_root))
+        except TrustError as exc:
+            raise SessionError(explain_failure(exc, self.paths.project_dir)) from None
+
     def _launch(self, record: dict[str, Any], prompt: str, *, resume: bool) -> None:
+        self._ensure_trust()
         turn = record["turn"] + 1
         directory = self.root / record["session_id"]
         stdout_path = directory / f"turn-{turn}.jsonl"
@@ -310,7 +320,7 @@ class SessionStore:
 
 
 def store_from_settings(settings) -> SessionStore:
-    return SessionStore(settings.paths, settings.claude_executable)
+    return SessionStore(settings.paths, settings.claude_executable, settings.repo_root)
 
 
 def current_pid_ticks(pid: int) -> int | None:  # re-exported for tests

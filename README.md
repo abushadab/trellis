@@ -46,10 +46,8 @@ Requirements: `claude`, `git`, `uv` (for `uvx`), and optionally `npx` for Playwr
 cd .trellis/agents/sunny && claude
 ```
 
-Describe what you want to Sunny. Accept the workspace trust dialog the first time; without it the rendered
-`additionalDirectories` setting is ignored. Trust is stored per git repository root, so accepting it once
-also covers Iris and Ben. Their `claude -p` sessions never show the dialog, so the root must have been
-trusted once from an interactive session.
+Describe what you want to Sunny. `/trellis:init` marks the project's git root as a trusted workspace
+(`trellis trust`) so the headless sessions Sunny starts keep the rendered permissions; there is no dialog to accept.
 
 ## Config
 

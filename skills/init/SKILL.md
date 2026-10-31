@@ -82,51 +82,25 @@ The first run downloads dependencies and can take a minute. On a render error (e
 and fix the config with the user; do not edit rendered files. Show the doctor output. Explain any
 warning in plain English (missing `npx` means no Playwright; a missing docs file means it is skipped).
 
-## 6. Trust the folders
+## 6. Trust the folders (automatic)
 
-Agents run from `.trellis/agents/{sunny,iris,ben}`. Claude Code applies a project's
-`permissions.additionalDirectories` and allow rules only for a trusted folder. Facts to rely on:
-
-- Trust is keyed on the git repository root, not on each subfolder. Trusting the project once covers
-  all three agent folders.
-- `claude -p` (how Sunny runs Iris and Ben) never shows a trust dialog. If the repository root has not
-  been trusted, those sessions run without the project's `additionalDirectories` and allow rules, and
-  stderr says "this workspace has not been trusted". So the root must be trusted once from an interactive
-  session.
-- Hooks and `.mcp.json` servers in the rendered folders work in `-p` regardless of trust.
-
-Check the current state (read only):
+Headless `claude -p` sessions never show the trust dialog, and until the project's git root is trusted they
+ignore `permissions.additionalDirectories` and the allow rules. Do not ask the user about this; run it
+straight after rendering:
 
 ```bash
-python3 - "$(git rev-parse --show-toplevel)" <<'PY'
-import json, os, sys
-root = sys.argv[1]
-cfg = os.path.join(os.environ.get("CLAUDE_CONFIG_DIR") or os.path.expanduser("~"), ".claude.json")
-try:
-    projects = json.load(open(cfg)).get("projects", {})
-except (OSError, ValueError):
-    projects = {}
-print("trusted" if projects.get(root, {}).get("hasTrustDialogAccepted") else "not trusted", root)
-PY
+uvx --from "${CLAUDE_PLUGIN_ROOT}/server" trellis trust --project "$PWD"
 ```
 
-If it prints `trusted`, say nothing more. If `not trusted`, recommend the safe route: start Sunny once
-(step 7) and accept the trust dialog, which records trust for the repository root.
-
-Only if the user explicitly prefers to skip the dialog, offer to set
-`projects["<repo root>"].hasTrustDialogAccepted = true` in `~/.claude.json` yourself. Ask first, and
-explain that it grants the repository's settings the same trust as accepting the dialog. If they agree:
-copy the file to `~/.claude.json.trellis-backup`, change only that one key (create the project entry with
-`{}` if missing, keep every other key), write to a temporary file in the same directory and rename it over
-the original. Warn that a running Claude Code session may rewrite the file, so the change is best made
-when no other session is open, and re-read the file afterward to confirm.
-
-If `repo_root` in the config is a different git repository than the project directory, that repository
-root needs the same trust.
+It records `hasTrustDialogAccepted` for the project's git root, and for `repo_root`'s git root when that is a
+different repository, in `~/.claude.json` (or `$CLAUDE_CONFIG_DIR/.claude.json`). It changes only that key,
+keeps a one-time backup next to the file, and is safe to repeat. Show its output in one line. If it fails
+(exit 1), show the message and continue: Sunny retries it before every session, and `trellis doctor` reports
+the trust state.
 
 ## 7. Finish
 
-Summarize in a few lines: what was written, the doctor result, and how to start:
+Summarize in a few lines: what was written, the doctor result, and how to start (re-run `trellis doctor` after the trust step so its report matches):
 
 ```bash
 cd .trellis/agents/sunny && claude
@@ -134,7 +108,6 @@ cd .trellis/agents/sunny && claude
 
 Tell the user:
 
-- Accept the trust dialog the first time. Without it, `additionalDirectories` is ignored.
 - Sunny is the only agent they talk to. It starts Iris and Ben itself.
 - Suggest committing `.trellis/config.yml` and `.trellis/.gitignore`. Do not commit for them unless asked.
   Rendered agent folders and runtime state stay ignored, apart from specs and plans.

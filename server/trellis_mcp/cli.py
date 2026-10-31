@@ -39,6 +39,11 @@ def build_parser() -> argparse.ArgumentParser:
     register.add_argument("--agent", required=True, choices=AGENT_NAMES)
     register.add_argument("--project", required=True, type=_project)
 
+    trust = sub.add_parser(
+        "trust", help="mark the project's git root(s) as trusted workspaces for headless sessions"
+    )
+    trust.add_argument("--project", type=_project, default=Path.cwd())
+
     wait = sub.add_parser("wait", help="exit when a Sunny session finishes its turn")
     wait.add_argument("--project", type=_project, default=Path.cwd())
     wait.add_argument(
@@ -128,7 +133,26 @@ def _store(project: Path):
     from .sessions import SessionStore
 
     config = load_config(project)
-    return SessionStore(config.paths, config.claude_executable), config
+    return SessionStore(config.paths, config.claude_executable, config.repo_root), config
+
+
+def _trust(args: argparse.Namespace) -> int:
+    from .config import ConfigError, load_config
+    from .trust import TrustError, ensure_trusted, explain_failure, trust_roots
+
+    try:
+        config = load_config(args.project)
+    except ConfigError as exc:
+        print(f"trellis trust: {exc}", file=sys.stderr)
+        return 2
+    try:
+        report = ensure_trusted(trust_roots(config.project_dir, config.repo_root))
+    except TrustError as exc:
+        print(f"trellis trust: {explain_failure(exc, config.project_dir)}", file=sys.stderr)
+        return 1
+    for line in report.lines():
+        print(line)
+    return 0
 
 
 def _wait(args: argparse.Namespace) -> int:
@@ -203,6 +227,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         "render": _render,
         "hook": _hook,
         "doctor": _doctor,
+        "trust": _trust,
         "wait": _wait,
         "usage": _usage,
         "watch-usage": _watch_usage,
