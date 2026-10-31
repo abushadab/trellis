@@ -48,6 +48,21 @@ def _claude_check() -> Check:
     return Check(OK, "claude", f"{found} {version}".strip())
 
 
+def _usage_check() -> Check:
+    from .usage import config_dir, token_available
+
+    if token_available():
+        return Check(
+            OK, "usage token", f"`trellis usage` can read the OAuth token in {config_dir()}/.credentials.json"
+        )
+    return Check(
+        WARN,
+        "usage token",
+        f"no OAuth token readable in {config_dir()}/.credentials.json (for example a keychain login); "
+        "`trellis usage` prints `usage: unavailable` and the usage watcher stays off",
+    )
+
+
 def _git_repo(path: Path) -> bool:
     try:
         result = subprocess.run(
@@ -133,6 +148,7 @@ def run_doctor(
         checks.append(Check(FAIL, "config", str(exc)))
         return checks
     checks.extend(_config_checks(config))
+    checks.append(_usage_check())
     checks.extend(_rendered_checks(config, plugin_root, templates))
     state = Paths(config.project_dir).state_dir
     checks.append(

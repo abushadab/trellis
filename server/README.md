@@ -18,7 +18,10 @@ cd <plugin_root>/server && uv run --extra test pytest -q   # the test suite
 | `trellis serve --agent {sunny,iris,ben} --project DIR` | stdio MCP server for one agent. The server is built in `main()`; importing the package starts nothing. Logs go to stderr only. |
 | `trellis render --project DIR [--check] [--agent A ...] [--templates DIR] [--plugin-root DIR]` | Renders the templates into `DIR/.trellis/agents/`. `--check` writes nothing and exits 1 when any output is stale. Exit 2 is a render error. |
 | `trellis hook register-subagent --agent A --project DIR` | PostToolUse hook on the `Agent` tool: reads the event on stdin, registers the subagent in `.trellis/state/registry.sqlite3`. Exit 2 (message on stderr) when registration fails. |
-| `trellis doctor [--project DIR]` | Checks `claude`, `uv`, `git`, `npx`, the config, the rendered files and whether they match the templates. |
+| `trellis doctor [--project DIR]` | Checks `claude`, `uv`, `git`, `npx`, the config, whether `trellis usage` can read an OAuth token, the rendered files and whether they match the templates. |
+| `trellis wait --project DIR [--session ID ...] [--interval S] [--timeout S]` | Exits when a named session (or, with none named, any session running now) ends its turn. Prints `<session_id> Status: <Turn Status value>`. |
+| `trellis usage --project DIR` | Prints 5-hour and 7-day utilization with reset times. Prints `usage: unavailable` (exit 0) when no OAuth token is readable. |
+| `trellis watch-usage --project DIR [--threshold N] [--interval 300]` | Pauses the lowest-priority running session at the threshold and exits with `PAUSED ...`; exits with `RESET`, `IDLE ...` or `usage: unavailable` otherwise. |
 
 The plugin root (the directory that holds `server/` and `templates/`) is found from
 `--plugin-root`, else `$CLAUDE_PLUGIN_ROOT`, else the source checkout this package runs from.
@@ -32,6 +35,7 @@ An installed (non-editable) package cannot see the checkout, so skills pass
 ```yaml
 claude_projects_root: null     # where Claude Code keeps transcripts; default $CLAUDE_CONFIG_DIR/projects or ~/.claude/projects
 context_window_tokens: null    # null = 200000 for a subagent, 1000000 when its model id says [1m] or its usage already passed 200000
+claude_executable: null        # null = `claude` on PATH; the session launcher runs this (tests point it at a fake)
 ```
 
 Relative paths in `product_doc`, `runtime_guide`, `design_authority` and
@@ -132,3 +136,13 @@ Path arguments are absolute. The legacy forms relative to an agent's state direc
 (`workitems/<id>/...`, `specflows/<id>/...`) are still accepted where the server validates a path
 (`plan_output_path`, `implementation_summary_path`, the planner pointer, a previous spec output path).
 Chat timestamps are ISO 8601 with the machine's local offset.
+
+## Sessions (Sunny)
+
+`start_session` runs `claude -p <prompt> --session-id <uuid> --output-format stream-json --verbose
+--permission-mode bypassPermissions` from `.trellis/agents/<agent>/` with
+`CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0` and stdin `/dev/null`; `resume_session` uses `--resume <id>`.
+The process is detached (`start_new_session=True`, output in files) and outlives the MCP server. State is
+`state/sunny/sessions/<id>.json` plus `<id>/turn-<n>.jsonl`. Status comes from the live PID (matched by
+process start time, never by name) and the last `result` event of the stream; one run can emit several,
+the last is final. `pause_session` sends SIGINT to that exact PID only.
